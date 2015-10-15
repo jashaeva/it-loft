@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>RSpec results</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Expires" content="-1" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-size: 80%;
+  }
+  </style>
+  <script type="text/javascript">
+    // <![CDATA[
+
+function addClass(element_id, classname) {
+  document.getElementById(element_id).className += (" " + classname);
+}
+
+function removeClass(element_id, classname) {
+  var elem = document.getElementById(element_id);
+  var classlist = elem.className.replace(classname,'');
+  elem.className = classlist;
+}
+
+function moveProgressBar(percentDone) {
+  document.getElementById("rspec-header").style.width = percentDone +"%";
+}
+
+function makeRed(element_id) {
+  removeClass(element_id, 'passed');
+  removeClass(element_id, 'not_implemented');
+  addClass(element_id,'failed');
+}
+
+function makeYellow(element_id) {
+  var elem = document.getElementById(element_id);
+  if (elem.className.indexOf("failed") == -1) {  // class doesn't includes failed
+    if (elem.className.indexOf("not_implemented") == -1) { // class doesn't include not_implemented
+      removeClass(element_id, 'passed');
+      addClass(element_id,'not_implemented');
+    }
+  }
+}
+
+function apply_filters() {
+  var passed_filter = document.getElementById('passed_checkbox').checked;
+  var failed_filter = document.getElementById('failed_checkbox').checked;
+  var pending_filter = document.getElementById('pending_checkbox').checked;
+
+  assign_display_style("example passed", passed_filter);
+  assign_display_style("example failed", failed_filter);
+  assign_display_style("example not_implemented", pending_filter);
+
+  assign_display_style_for_group("example_group passed", passed_filter);
+  assign_display_style_for_group("example_group not_implemented", pending_filter, pending_filter || passed_filter);
+  assign_display_style_for_group("example_group failed", failed_filter, failed_filter || pending_filter || passed_filter);
+}
+
+function get_display_style(display_flag) {
+  var style_mode = 'none';
+  if (display_flag == true) {
+    style_mode = 'block';
+  }
+  return style_mode;
+}
+
+function assign_display_style(classname, display_flag) {
+  var style_mode = get_display_style(display_flag);
+  var elems = document.getElementsByClassName(classname)
+  for (var i=0; i<elems.length;i++) {
+    elems[i].style.display = style_mode;
+  }
+}
+
+function assign_display_style_for_group(classname, display_flag, subgroup_flag) {
+  var display_style_mode = get_display_style(display_flag);
+  var subgroup_style_mode = get_display_style(subgroup_flag);
+  var elems = document.getElementsByClassName(classname)
+  for (var i=0; i<elems.length;i++) {
+    var style_mode = display_style_mode;
+    if ((display_flag != subgroup_flag) && (elems[i].getElementsByTagName('dt')[0].innerHTML.indexOf(", ") != -1)) {
+      elems[i].style.display = subgroup_style_mode;
+    } else {
+      elems[i].style.display = display_style_mode;
+    }
+  }
+}
+
+    // ]]>
+  </script>
+  <style type="text/css">
+#rspec-header {
+  background: #65C400; color: #fff; height: 4em;
+}
+
+.rspec-report h1 {
+  margin: 0px 10px 0px 10px;
+  padding: 10px;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  font-size: 1.8em;
+  position: absolute;
+}
+
+#label {
+  float:left;
+}
+
+#display-filters {
+  float:left;
+  padding: 28px 0 0 40%;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+}
+
+#summary {
+  float:right;
+  padding: 5px 10px;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  text-align: right;
+}
+
+#summary p {
+  margin: 0 0 0 2px;
+}
+
+#summary #totals {
+  font-size: 1.2em;
+}
+
+.example_group {
+  margin: 0 10px 5px;
+  background: #fff;
+}
+
+dl {
+  margin: 0; padding: 0 0 5px;
+  font: normal 11px "Lucida Grande", Helvetica, sans-serif;
+}
+
+dt {
+  padding: 3px;
+  background: #65C400;
+  color: #fff;
+  font-weight: bold;
+}
+
+dd {
+  margin: 5px 0 5px 5px;
+  padding: 3px 3px 3px 18px;
+}
+
+dd .duration {
+  padding-left: 5px;
+  text-align: right;
+  right: 0px;
+  float:right;
+}
+
+dd.example.passed {
+  border-left: 5px solid #65C400;
+  border-bottom: 1px solid #65C400;
+  background: #DBFFB4; color: #3D7700;
+}
+
+dd.example.not_implemented {
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98; color: #131313;
+}
+
+dd.example.pending_fixed {
+  border-left: 5px solid #0000C2;
+  border-bottom: 1px solid #0000C2;
+  color: #0000C2; background: #D3FBFF;
+}
+
+dd.example.failed {
+  border-left: 5px solid #C20000;
+  border-bottom: 1px solid #C20000;
+  color: #C20000; background: #FFFBD3;
+}
+
+
+dt.not_implemented {
+  color: #000000; background: #FAF834;
+}
+
+dt.pending_fixed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+dt.failed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+
+#rspec-header.not_implemented {
+  color: #000000; background: #FAF834;
+}
+
+#rspec-header.pending_fixed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+#rspec-header.failed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+
+.backtrace {
+  color: #000;
+  font-size: 12px;
+}
+
+a {
+  color: #BE5C00;
+}
+
+/* Ruby code, style similar to vibrant ink */
+.ruby {
+  font-size: 12px;
+  font-family: monospace;
+  color: white;
+  background-color: black;
+  padding: 0.1em 0 0.2em 0;
+}
+
+.ruby .keyword { color: #FF6600; }
+.ruby .constant { color: #339999; }
+.ruby .attribute { color: white; }
+.ruby .global { color: white; }
+.ruby .module { color: white; }
+.ruby .class { color: white; }
+.ruby .string { color: #66FF00; }
+.ruby .ident { color: white; }
+.ruby .method { color: #FFCC00; }
+.ruby .number { color: white; }
+.ruby .char { color: white; }
+.ruby .comment { color: #9933CC; }
+.ruby .symbol { color: white; }
+.ruby .regex { color: #44B4CC; }
+.ruby .punct { color: white; }
+.ruby .escape { color: white; }
+.ruby .interp { color: white; }
+.ruby .expr { color: white; }
+
+.ruby .offending { background-color: gray; }
+.ruby .linenum {
+  width: 75px;
+  padding: 0.1em 1em 0.2em 0;
+  color: #000000;
+  background-color: #FFFBD3;
+}
+
+  </style>
+</head>
+<body>
+<div class="rspec-report">
+
+<div id="rspec-header">
+  <div id="label">
+    <h1>RSpec Code Examples</h1>
+  </div>
+
+  <div id="display-filters">
+    <input id="passed_checkbox"  name="passed_checkbox"  type="checkbox" checked="checked" onchange="apply_filters()" value="1" /> <label for="passed_checkbox">Passed</label>
+    <input id="failed_checkbox"  name="failed_checkbox"  type="checkbox" checked="checked" onchange="apply_filters()" value="2" /> <label for="failed_checkbox">Failed</label>
+    <input id="pending_checkbox" name="pending_checkbox" type="checkbox" checked="checked" onchange="apply_filters()" value="3" /> <label for="pending_checkbox">Pending</label>
+  </div>
+
+  <div id="summary">
+    <p id="totals">&#160;</p>
+    <p id="duration">&#160;</p>
+  </div>
+</div>
+
+
+<div class="results">
+<div id="div_group_1" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_1" class="passed">AddEvent from AdminPanel</dt>
+  </dl>
+</div>
+<div id="div_group_2" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_2" class="passed">EventTitle?</dt>
+    <script type="text/javascript">moveProgressBar('0.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.03369s</span></dd>
+    <script type="text/javascript">moveProgressBar('0.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.63381s</span></dd>
+    <script type="text/javascript">moveProgressBar('1.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.57237s</span></dd>
+    <script type="text/javascript">moveProgressBar('1.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.53026s</span></dd>
+    <script type="text/javascript">moveProgressBar('2.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.62590s</span></dd>
+    <script type="text/javascript">moveProgressBar('2.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>0.89812s</span></dd>
+    <script type="text/javascript">moveProgressBar('3.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.93390s</span></dd>
+  </dl>
+</div>
+<div id="div_group_3" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_3" class="passed">EventDescription?</dt>
+    <script type="text/javascript">moveProgressBar('3.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>0.89887s</span></dd>
+    <script type="text/javascript">moveProgressBar('4.1');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.51344s</span></dd>
+    <script type="text/javascript">moveProgressBar('4.5');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.49612s</span></dd>
+    <script type="text/javascript">moveProgressBar('5.0');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.52280s</span></dd>
+    <script type="text/javascript">moveProgressBar('5.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.54365s</span></dd>
+    <script type="text/javascript">moveProgressBar('5.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(512)</span><span class='duration'>1.11982s</span></dd>
+    <script type="text/javascript">moveProgressBar('6.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(513)</span><span class='duration'>1.11101s</span></dd>
+  </dl>
+</div>
+<div id="div_group_4" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_4" class="passed">URL?</dt>
+    <script type="text/javascript">moveProgressBar('6.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive URL examples</span><span class='duration'>3.32837s</span></dd>
+    <script type="text/javascript">moveProgressBar('7.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative URL examples</span><span class='duration'>3.87061s</span></dd>
+  </dl>
+</div>
+<div id="div_group_5" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_5" class="passed">Dates of event</dt>
+    <script type="text/javascript">moveProgressBar('7.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date can not be empty </span><span class='duration'>3.07912s</span></dd>
+    <script type="text/javascript">moveProgressBar('8.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">End date can not be empty </span><span class='duration'>1.53571s</span></dd>
+    <script type="text/javascript">moveProgressBar('8.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>3.47161s</span></dd>
+    <script type="text/javascript">moveProgressBar('9.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>3.46776s</span></dd>
+  </dl>
+</div>
+<div id="div_group_6" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_6" class="passed">CheckBox Enabled</dt>
+    <script type="text/javascript">moveProgressBar('9.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Check Enabled = true</span><span class='duration'>5.01875s</span></dd>
+    <script type="text/javascript">moveProgressBar('10.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">Check Enabled = false</span><span class='duration'>5.49953s</span></dd>
+  </dl>
+</div>
+<div id="div_group_7" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_7" class="passed">Admin Add Subscriber</dt>
+  </dl>
+</div>
+<div id="div_group_8" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_8" class="passed">Subscriber?</dt>
+    <script type="text/javascript">moveProgressBar('10.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>5.62788s</span></dd>
+  </dl>
+</div>
+<div id="div_group_9" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_9" class="passed">Edit Creator Page</dt>
+  </dl>
+</div>
+<div id="div_group_10" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_10" class="passed">RequesterName?</dt>
+    <script type="text/javascript">moveProgressBar('10.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>0.65691s</span></dd>
+    <script type="text/javascript">moveProgressBar('11.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.24547s</span></dd>
+    <script type="text/javascript">moveProgressBar('11.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.16286s</span></dd>
+    <script type="text/javascript">moveProgressBar('12.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.21403s</span></dd>
+    <script type="text/javascript">moveProgressBar('12.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.19568s</span></dd>
+    <script type="text/javascript">moveProgressBar('13.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.00748s</span></dd>
+    <script type="text/javascript">moveProgressBar('13.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.56009s</span></dd>
+    <script type="text/javascript">moveProgressBar('14.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>0.27089s</span></dd>
+  </dl>
+</div>
+<div id="div_group_11" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_11" class="passed">RequesterEmail? </dt>
+    <script type="text/javascript">moveProgressBar('14.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive email examples</span><span class='duration'>13.84297s</span></dd>
+    <script type="text/javascript">moveProgressBar('15.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>11.78013s</span></dd>
+    <script type="text/javascript">moveProgressBar('15.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>0.33300s</span></dd>
+  </dl>
+</div>
+<div id="div_group_12" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_12" class="passed">Phone number?</dt>
+    <script type="text/javascript">moveProgressBar('15.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>0.98511s</span></dd>
+    <script type="text/javascript">moveProgressBar('16.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.56116s</span></dd>
+  </dl>
+</div>
+<div id="div_group_13" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_13" class="passed">Edit Event from AdminPanel</dt>
+  </dl>
+</div>
+<div id="div_group_14" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_14" class="passed">EventTitle?</dt>
+    <script type="text/javascript">moveProgressBar('16.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.22766s</span></dd>
+    <script type="text/javascript">moveProgressBar('17.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.67730s</span></dd>
+    <script type="text/javascript">moveProgressBar('17.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.61397s</span></dd>
+    <script type="text/javascript">moveProgressBar('18.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.60234s</span></dd>
+    <script type="text/javascript">moveProgressBar('18.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.67079s</span></dd>
+    <script type="text/javascript">moveProgressBar('19.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.45012s</span></dd>
+    <script type="text/javascript">moveProgressBar('19.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.94588s</span></dd>
+    <script type="text/javascript">moveProgressBar('20.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>0.71064s</span></dd>
+  </dl>
+</div>
+<div id="div_group_15" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_15" class="passed">EventDescription?</dt>
+    <script type="text/javascript">moveProgressBar('20.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>0.96305s</span></dd>
+    <script type="text/javascript">moveProgressBar('21.0');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.57071s</span></dd>
+    <script type="text/javascript">moveProgressBar('21.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.61394s</span></dd>
+    <script type="text/javascript">moveProgressBar('21.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.57375s</span></dd>
+    <script type="text/javascript">moveProgressBar('22.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.58749s</span></dd>
+    <script type="text/javascript">moveProgressBar('22.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(512)</span><span class='duration'>1.19756s</span></dd>
+    <script type="text/javascript">moveProgressBar('23.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(513)</span><span class='duration'>1.21613s</span></dd>
+  </dl>
+</div>
+<div id="div_group_16" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_16" class="passed">URL?</dt>
+    <script type="text/javascript">moveProgressBar('23.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive URL examples</span><span class='duration'>8.88450s</span></dd>
+    <script type="text/javascript">moveProgressBar('24.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative URL examples</span><span class='duration'>11.33415s</span></dd>
+  </dl>
+</div>
+<div id="div_group_17" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_17" class="passed">Dates of event</dt>
+    <script type="text/javascript">moveProgressBar('24.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>3.68653s</span></dd>
+    <script type="text/javascript">moveProgressBar('25.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>3.48953s</span></dd>
+  </dl>
+</div>
+<div id="div_group_18" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_18" class="passed">CheckBox Enabled</dt>
+    <script type="text/javascript">moveProgressBar('25.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Check Enabled = true</span><span class='duration'>0.79170s</span></dd>
+    <script type="text/javascript">moveProgressBar('26.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">Check Enabled = false</span><span class='duration'>1.22220s</span></dd>
+  </dl>
+</div>
+<div id="div_group_19" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_19" class="passed">Edit Creator Page</dt>
+  </dl>
+</div>
+<div id="div_group_20" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_20" class="passed">RequesterName?</dt>
+    <script type="text/javascript">moveProgressBar('26.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>0.64590s</span></dd>
+    <script type="text/javascript">moveProgressBar('26.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>0.24820s</span></dd>
+    <script type="text/javascript">moveProgressBar('27.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.19388s</span></dd>
+    <script type="text/javascript">moveProgressBar('27.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.18508s</span></dd>
+    <script type="text/javascript">moveProgressBar('28.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>0.19455s</span></dd>
+    <script type="text/javascript">moveProgressBar('28.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.03376s</span></dd>
+    <script type="text/javascript">moveProgressBar('29.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.50171s</span></dd>
+    <script type="text/javascript">moveProgressBar('29.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>0.26984s</span></dd>
+  </dl>
+</div>
+<div id="div_group_21" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_21" class="passed">RequesterEmail? </dt>
+    <script type="text/javascript">moveProgressBar('30.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive email examples</span><span class='duration'>13.97116s</span></dd>
+    <script type="text/javascript">moveProgressBar('30.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>11.61068s</span></dd>
+    <script type="text/javascript">moveProgressBar('31.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>0.35339s</span></dd>
+  </dl>
+</div>
+<div id="div_group_22" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_22" class="passed">Phone number?</dt>
+    <script type="text/javascript">moveProgressBar('31.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.04430s</span></dd>
+    <script type="text/javascript">moveProgressBar('31.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>0.61653s</span></dd>
+  </dl>
+</div>
+<div id="div_group_23" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_23" class="passed">RequestForEvent</dt>
+  </dl>
+</div>
+<div id="div_group_24" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_24" class="passed">requesterName</dt>
+    <script type="text/javascript">moveProgressBar('32.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>2.45863s</span></dd>
+    <script type="text/javascript">moveProgressBar('32.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.03363s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>0.94673s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>0.91702s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>2.12956s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>2.13312s</span></dd>
+    <script type="text/javascript">moveProgressBar('35.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>2.13506s</span></dd>
+  </dl>
+</div>
+<div id="div_group_25" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_25" class="passed">EventTitle?</dt>
+    <script type="text/javascript">moveProgressBar('35.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.81985s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.0');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.74815s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.5');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.67390s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.72989s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.82708s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>2.04957s</span></dd>
+    <script type="text/javascript">moveProgressBar('38.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>2.13002s</span></dd>
+  </dl>
+</div>
+<div id="div_group_26" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_26" class="passed">EventDescription?</dt>
+    <script type="text/javascript">moveProgressBar('38.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>2.97762s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.61307s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.72691s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.1');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.69200s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.6');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.83598s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(512)</span><span class='duration'>2.24768s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(513)</span><span class='duration'>2.35467s</span></dd>
+  </dl>
+</div>
+<div id="div_group_27" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_27" class="passed">PhoneNumber?</dt>
+    <script type="text/javascript">moveProgressBar('42.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">spaces</span><span class='duration'>3.37210s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>2.44333s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>2.07037s</span></dd>
+  </dl>
+</div>
+<div id="div_group_28" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_28" class="passed">URL?</dt>
+    <script type="text/javascript">moveProgressBar('43.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive URL examples</span><span class='duration'>6.49187s</span></dd>
+    <script type="text/javascript">moveProgressBar('43.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative URL examples</span><span class='duration'>7.33212s</span></dd>
+  </dl>
+</div>
+<div id="div_group_29" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_29" class="passed">Email?</dt>
+    <script type="text/javascript">moveProgressBar('44.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive email examples</span><span class='duration'>9.35740s</span></dd>
+    <script type="text/javascript">moveProgressBar('44.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>7.40949s</span></dd>
+  </dl>
+</div>
+<div id="div_group_30" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_30" class="passed">Dates of event</dt>
+    <script type="text/javascript">moveProgressBar('45.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date can not be empty </span><span class='duration'>4.83727s</span></dd>
+    <script type="text/javascript">moveProgressBar('45.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">End date can not be empty </span><span class='duration'>3.51296s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>4.32953s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>4.30532s</span></dd>
+  </dl>
+</div>
+<div id="div_group_31" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_31" class="passed">RequestForEvent, short form</dt>
+  </dl>
+</div>
+<div id="div_group_32" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_32" class="passed">EventTitle?</dt>
+    <script type="text/javascript">moveProgressBar('47.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>2.87424s</span></dd>
+    <script type="text/javascript">moveProgressBar('47.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.77278s</span></dd>
+    <script type="text/javascript">moveProgressBar('47.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.69932s</span></dd>
+    <script type="text/javascript">moveProgressBar('48.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.78481s</span></dd>
+    <script type="text/javascript">moveProgressBar('48.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.76644s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>1.98913s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>2.46366s</span></dd>
+  </dl>
+</div>
+<div id="div_group_33" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_33" class="passed">EventDescription?</dt>
+    <script type="text/javascript">moveProgressBar('50.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>2.79449s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.6');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.59261s</span></dd>
+    <script type="text/javascript">moveProgressBar('51.1');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.74930s</span></dd>
+    <script type="text/javascript">moveProgressBar('51.5');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.65729s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.0');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.75066s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(512)</span><span class='duration'>2.30579s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(513)</span><span class='duration'>2.47137s</span></dd>
+  </dl>
+</div>
+<div id="div_group_34" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_34" class="passed">URL?</dt>
+    <script type="text/javascript">moveProgressBar('53.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive URL examples</span><span class='duration'>4.93979s</span></dd>
+    <script type="text/javascript">moveProgressBar('53.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative URL examples</span><span class='duration'>5.50815s</span></dd>
+  </dl>
+</div>
+<div id="div_group_35" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_35" class="passed">Dates of event</dt>
+    <script type="text/javascript">moveProgressBar('54.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date can not be empty </span><span class='duration'>4.51464s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">End date can not be empty </span><span class='duration'>3.60092s</span></dd>
+    <script type="text/javascript">moveProgressBar('55.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>4.21848s</span></dd>
+    <script type="text/javascript">moveProgressBar('55.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>4.22959s</span></dd>
+  </dl>
+</div>
+<div id="div_group_36" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_36" class="passed">Restore password</dt>
+  </dl>
+</div>
+<div id="div_group_37" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_37" class="passed">Positive email examples, but not exists in DB as users</dt>
+    <script type="text/javascript">moveProgressBar('56.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">read emails from file, valid email, but didnot signed in system</span><span class='duration'>8.74282s</span></dd>
+  </dl>
+</div>
+<div id="div_group_38" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_38" class="passed">Negative examples</dt>
+    <script type="text/javascript">moveProgressBar('56.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">read emails from file, get error message</span><span class='duration'>6.37328s</span></dd>
+  </dl>
+</div>
+<div id="div_group_39" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_39" class="passed">Another positive examples</dt>
+    <script type="text/javascript">moveProgressBar('57.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">positive example, email in DB en_locale</span><span class='duration'>5.78739s</span></dd>
+    <script type="text/javascript">moveProgressBar('57.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">positive example, email in DB rus_locale</span><span class='duration'>5.81658s</span></dd>
+  </dl>
+</div>
+<div id="div_group_40" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_40" class="passed">Login Page</dt>
+  </dl>
+</div>
+<div id="div_group_41" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_41" class="passed">Email?</dt>
+    <script type="text/javascript">moveProgressBar('57.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive email examples</span><span class='duration'>14.70239s</span></dd>
+    <script type="text/javascript">moveProgressBar('58.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>7.38473s</span></dd>
+  </dl>
+</div>
+<div id="div_group_42" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_42" class="passed">Password?</dt>
+    <script type="text/javascript">moveProgressBar('58.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">password can not be empty</span><span class='duration'>2.02635s</span></dd>
+    <script type="text/javascript">moveProgressBar('59.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">wrong password</span><span class='duration'>2.67217s</span></dd>
+    <script type="text/javascript">moveProgressBar('59.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">short password</span><span class='duration'>1.36455s</span></dd>
+    <script type="text/javascript">moveProgressBar('60.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">long password</span><span class='duration'>1.74504s</span></dd>
+  </dl>
+</div>
+<div id="div_group_43" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_43" class="passed">Others</dt>
+    <script type="text/javascript">moveProgressBar('60.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">user does not signed in</span><span class='duration'>2.42268s</span></dd>
+    <script type="text/javascript">moveProgressBar('61.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">positive case</span><span class='duration'>3.45461s</span></dd>
+  </dl>
+</div>
+<div id="div_group_44" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_44" class="passed">SignUp Page</dt>
+  </dl>
+</div>
+<div id="div_group_45" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_45" class="passed">firstName</dt>
+    <script type="text/javascript">moveProgressBar('61.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName non-empty</span><span class='duration'>4.10360s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName can be 1char</span><span class='duration'>1.61782s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName can contain cirillic chars</span><span class='duration'>1.51764s</span></dd>
+    <script type="text/javascript">moveProgressBar('63.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName can contain both latin and cirillic chars</span><span class='duration'>1.16149s</span></dd>
+    <script type="text/javascript">moveProgressBar('63.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName can be  256 char</span><span class='duration'>1.50548s</span></dd>
+    <script type="text/javascript">moveProgressBar('63.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">firstName cann't be 257 char</span><span class='duration'>1.46197s</span></dd>
+  </dl>
+</div>
+<div id="div_group_46" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_46" class="passed">lastName</dt>
+    <script type="text/javascript">moveProgressBar('64.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName non-empty</span><span class='duration'>1.70779s</span></dd>
+    <script type="text/javascript">moveProgressBar('64.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName can be 1char</span><span class='duration'>1.19941s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName can contain cirillic chars</span><span class='duration'>1.10482s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName can contain both latin and cirillic chars</span><span class='duration'>1.17644s</span></dd>
+    <script type="text/javascript">moveProgressBar('66.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName can be  256 char</span><span class='duration'>1.43619s</span></dd>
+    <script type="text/javascript">moveProgressBar('66.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">lastName cann't be 257 char</span><span class='duration'>1.47947s</span></dd>
+  </dl>
+</div>
+<div id="div_group_47" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_47" class="passed">Email?</dt>
+    <script type="text/javascript">moveProgressBar('67.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive email examples</span><span class='duration'>8.06464s</span></dd>
+    <script type="text/javascript">moveProgressBar('67.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative email examples</span><span class='duration'>7.37117s</span></dd>
+  </dl>
+</div>
+<div id="div_group_48" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_48" class="passed">Password?</dt>
+    <script type="text/javascript">moveProgressBar('68.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">password can not be empty</span><span class='duration'>1.91577s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">short password</span><span class='duration'>1.14340s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">5-char long password</span><span class='duration'>1.31794s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">long password</span><span class='duration'>1.92524s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">long(256) password</span><span class='duration'>1.56936s</span></dd>
+  </dl>
+</div>
+<div id="div_group_49" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_49" class="passed">Others</dt>
+    <script type="text/javascript">moveProgressBar('70.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">such email already exists</span><span class='duration'>2.52392s</span></dd>
+  </dl>
+</div>
+<div id="div_group_50" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_50" class="passed">Send a letter to the support</dt>
+  </dl>
+</div>
+<div id="div_group_51" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_51" class="passed">Letter Title?</dt>
+    <script type="text/javascript">moveProgressBar('70.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>3.13091s</span></dd>
+    <script type="text/javascript">moveProgressBar('71.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.66630s</span></dd>
+    <script type="text/javascript">moveProgressBar('71.6');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.48614s</span></dd>
+    <script type="text/javascript">moveProgressBar('72.1');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.17599s</span></dd>
+    <script type="text/javascript">moveProgressBar('72.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.60031s</span></dd>
+    <script type="text/javascript">moveProgressBar('73.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>1.44693s</span></dd>
+  </dl>
+</div>
+<div id="div_group_52" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_52" class="passed">Letter Body?</dt>
+    <script type="text/javascript">moveProgressBar('73.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.21965s</span></dd>
+    <script type="text/javascript">moveProgressBar('73.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.11714s</span></dd>
+    <script type="text/javascript">moveProgressBar('74.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.12549s</span></dd>
+    <script type="text/javascript">moveProgressBar('74.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.06029s</span></dd>
+    <script type="text/javascript">moveProgressBar('75.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 4096</span><span class='duration'>7.11996s</span></dd>
+    <script type="text/javascript">moveProgressBar('75.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 4097</span><span class='duration'>6.78158s</span></dd>
+  </dl>
+</div>
+<div id="div_group_53" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_53" class="passed">RequestForEvent (user-request), short form</dt>
+  </dl>
+</div>
+<div id="div_group_54" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_54" class="passed">EventTitle?</dt>
+    <script type="text/javascript">moveProgressBar('76.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>2.36577s</span></dd>
+    <script type="text/javascript">moveProgressBar('76.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.62052s</span></dd>
+    <script type="text/javascript">moveProgressBar('77.1');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.26128s</span></dd>
+    <script type="text/javascript">moveProgressBar('77.6');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.30215s</span></dd>
+    <script type="text/javascript">moveProgressBar('78.0');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.34258s</span></dd>
+    <script type="text/javascript">moveProgressBar('78.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(256)</span><span class='duration'>1.73094s</span></dd>
+    <script type="text/javascript">moveProgressBar('78.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>1.63440s</span></dd>
+  </dl>
+</div>
+<div id="div_group_55" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_55" class="passed">EventDescription?</dt>
+    <script type="text/javascript">moveProgressBar('79.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.91120s</span></dd>
+    <script type="text/javascript">moveProgressBar('79.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.31972s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.26820s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.20861s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.30062s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(512)</span><span class='duration'>1.88629s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(513)</span><span class='duration'>1.86422s</span></dd>
+  </dl>
+</div>
+<div id="div_group_56" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_56" class="passed">URL?</dt>
+    <script type="text/javascript">moveProgressBar('82.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">Positive URL examples</span><span class='duration'>22.60237s</span></dd>
+    <script type="text/javascript">moveProgressBar('83.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Negative URL examples</span><span class='duration'>28.89508s</span></dd>
+  </dl>
+</div>
+<div id="div_group_57" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_57" class="passed">Dates of event</dt>
+    <script type="text/javascript">moveProgressBar('83.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date can not be empty </span><span class='duration'>4.03178s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">End date can not be empty </span><span class='duration'>3.49747s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>4.11544s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>4.12735s</span></dd>
+  </dl>
+</div>
+<div id="div_group_58" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_58" class="passed">Create and cancel event. </dt>
+  </dl>
+</div>
+<div id="div_group_59" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_59" class="passed">Cancel event</dt>
+  </dl>
+</div>
+<div id="div_group_60" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_60" class="passed">cancelComment</dt>
+    <script type="text/javascript">moveProgressBar('85.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">empty comment</span><span class='duration'>1.47025s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">transferComment can't be too long (513)</span><span class='duration'>1.93318s</span></dd>
+    <script type="text/javascript">moveProgressBar('86.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">cancel event</span><span class='duration'>1.23583s</span></dd>
+  </dl>
+</div>
+<div id="div_group_61" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_61" class="passed">Create and Move event. Delete after all.</dt>
+  </dl>
+</div>
+<div id="div_group_62" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_62" class="passed">Move event</dt>
+  </dl>
+</div>
+<div id="div_group_63" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_63" class="passed">dates</dt>
+    <script type="text/javascript">moveProgressBar('86.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date can not be empty </span><span class='duration'>2.50524s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">End date can not be empty </span><span class='duration'>0.93461s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">If startDate===endDate</span><span class='duration'>3.05970s</span></dd>
+    <script type="text/javascript">moveProgressBar('88.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">Start date should be less than end date</span><span class='duration'>3.09134s</span></dd>
+  </dl>
+</div>
+<div id="div_group_64" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_64" class="passed">transferComment</dt>
+    <script type="text/javascript">moveProgressBar('88.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">transferComment not empty</span><span class='duration'>0.89297s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">transferComment short enough (512)</span><span class='duration'>1.10603s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">transferComment can't be too long (513)</span><span class='duration'>0.78593s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">move event</span><span class='duration'>2.45491s</span></dd>
+  </dl>
+</div>
+<div id="div_group_65" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_65" class="passed">User Profile Page</dt>
+  </dl>
+</div>
+<div id="div_group_66" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_66" class="passed">FirstName?</dt>
+    <script type="text/javascript">moveProgressBar('90.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.72059s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.42365s</span></dd>
+    <script type="text/javascript">moveProgressBar('91.3');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.56022s</span></dd>
+    <script type="text/javascript">moveProgressBar('91.7');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.46314s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.2');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.48454s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.88920s</span></dd>
+    <script type="text/javascript">moveProgressBar('93.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>1.48449s</span></dd>
+    <script type="text/javascript">moveProgressBar('93.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>1.22777s</span></dd>
+  </dl>
+</div>
+<div id="div_group_67" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_67" class="passed">LastName?</dt>
+    <script type="text/javascript">moveProgressBar('94.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">non-empty?</span><span class='duration'>1.21793s</span></dd>
+    <script type="text/javascript">moveProgressBar('94.5');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Z' </span><span class='duration'>1.12645s</span></dd>
+    <script type="text/javascript">moveProgressBar('94.9');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Я' </span><span class='duration'>1.14914s</span></dd>
+    <script type="text/javascript">moveProgressBar('95.4');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Zфыпававав' </span><span class='duration'>1.11791s</span></dd>
+    <script type="text/javascript">moveProgressBar('95.8');</script>
+    <dd class="example passed"><span class="passed_spec_name"> str = 'Анна-Мария Елизавета Д'Эстрэ'</span><span class='duration'>1.23903s</span></dd>
+    <script type="text/javascript">moveProgressBar('96.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>2.33186s</span></dd>
+    <script type="text/javascript">moveProgressBar('96.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>1.51374s</span></dd>
+    <script type="text/javascript">moveProgressBar('97.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">restore old value</span><span class='duration'>1.24999s</span></dd>
+  </dl>
+</div>
+<div id="div_group_68" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_68" class="passed">Phone number?</dt>
+    <script type="text/javascript">moveProgressBar('97.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">strlen = 256</span><span class='duration'>1.89425s</span></dd>
+    <script type="text/javascript">moveProgressBar('98.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">str(257)</span><span class='duration'>1.49880s</span></dd>
+  </dl>
+</div>
+<div id="div_group_69" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_69" class="passed">Password?</dt>
+    <script type="text/javascript">moveProgressBar('98.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">short password</span><span class='duration'>1.23752s</span></dd>
+    <script type="text/javascript">moveProgressBar('99.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">long(257) password</span><span class='duration'>1.63762s</span></dd>
+    <script type="text/javascript">moveProgressBar('99.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">good long(256) password</span><span class='duration'>1.46575s</span></dd>
+    <script type="text/javascript">moveProgressBar('100.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">5-char long password</span><span class='duration'>1.16671s</span></dd>
+  </dl>
+</div>
+<script type="text/javascript">document.getElementById('duration').innerHTML = "Finished in <strong>771.47461 seconds</strong>";</script>
+<script type="text/javascript">document.getElementById('totals').innerHTML = "219 examples, 0 failures";</script>
+</div>
+</div>
+</body>
+</html>
