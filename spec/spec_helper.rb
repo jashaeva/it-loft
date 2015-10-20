@@ -15,7 +15,13 @@ RSpec.configure do |config|
     #@headless.start
      # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
      # @browser = Watir::Browser.new :ff
-     @browser = Watir::Browser.new :chrome
+    prefs = {
+      :download => {
+        :prompt_for_download => false,
+        :default_directory => "../chromedriver"
+      }
+    }
+     @browser = Watir::Browser.new :chrome, :prefs => prefs
      @browser.driver.manage.timeouts.implicit_wait = 10          
      
   end
