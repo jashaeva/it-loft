@@ -11,17 +11,17 @@ RSpec.configure do |config|
 
   # Open up the browser for each example.
   config.before :all do
-    #@headless = Headless.new
-    #@headless.start
+    @headless = Headless.new
+    @headless.start
      # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
-     # @browser = Watir::Browser.new :ff
-    prefs = {
-      :download => {
-        :prompt_for_download => false,
-        :default_directory => "../chromedriver"
-      }
-    }
-     @browser = Watir::Browser.new :chrome, :prefs => prefs
+    @browser = Watir::Browser.new :ff
+    #prefs = {
+    #  :download => {
+    #    :prompt_for_download => false,
+    #    :default_directory => "../chromedriver"
+    #  }
+    #}
+    # @browser = Watir::Browser.new :chrome, :prefs => prefs
      @browser.driver.manage.timeouts.implicit_wait = 10          
      
   end
@@ -29,6 +29,7 @@ RSpec.configure do |config|
   # Close that browser after each example.
   config.after :all do
     @browser.close if @browser
+    @headless.destroy
   end
 
   # Include RSpec::Helper into each of your example group for making it possible to
