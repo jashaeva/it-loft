@@ -1,4 +1,5 @@
 # Configuration for watir-rspec
+require 'headless'
 require "watir/rspec"
 # require "watir-webdriver"
 
