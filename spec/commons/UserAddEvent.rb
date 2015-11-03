@@ -7,7 +7,7 @@ require 'selenium/webdriver'
 class UserAddEventPage
   include PageObject
 
-  page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/user-request'
+  page_url 'http://itlft.7bits.it/user-request'
   
   DEFAULT_DATA = {       
     #'eventStartDate' => '2016-01-01 12:00',

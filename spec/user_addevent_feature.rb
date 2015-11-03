@@ -3,15 +3,12 @@
 require "pry"
 
 require_relative '../spec/spec_helper'
-require_relative '../spec/commons/useful_func'
 require_relative '../spec/commons/UserAddEvent'
 require_relative '../spec/commons/LoginPage'
-require_relative '../spec/commons/roots'
 
 describe "RequestForEvent (user-request), short form" do
  
-  before (:all) do   
-    
+  before (:all) do       
     page = LoginPage.new(browser, true)
     browser.refresh
     page.username_element.when_visible
@@ -118,22 +115,15 @@ describe "RequestForEvent (user-request), short form" do
   end  
   
   context 'URL?' do
-    before (:all)  do
-      # $stdout = File.open("test_data/url_output", "a")
-      puts "Start testing urls **********"
-    end
-
+    
     it 'Positive URL examples' do
-      page = UserAddEventPage.new(browser, true)       
-      i=0
+      page = UserAddEventPage.new(browser, true)             
       urls = File.readlines("test_data/good_url.txt")      
       aggregate_failures("good_url") do
         urls.each do |url|   
           browser.refresh       
           page.eventReference = url
           page.sendRequest          
-          # browser.screenshot.save "test_data/screenshots/u-shortref:pos#{i.to_s}.png"
-          # i=i+1
           Watir::Wait.until{ page.errorReference =="" }
           expect(page.errorReference =="").to be_truthy
         end
@@ -141,29 +131,18 @@ describe "RequestForEvent (user-request), short form" do
     end  
 
     it 'Negative URL examples' do
-      page = UserAddEventPage.new(browser, true)
-      puts "Negatives *******************"
-      i=0
+      page = UserAddEventPage.new(browser, true)      
       urls = File.readlines("test_data/bad_url.txt")      
       aggregate_failures("bad_url") do
         urls.each do |url|
           browser.refresh
           page.eventReference = url
-          page.sendRequest
-          if page.errorReference == "" 
-            browser.screenshot.save "test_data/screenshots/u-shortref:neg#{i.to_s}.png"
-            i = i + 1
-            puts url + " failed"
-          else
-            puts url + " --- Ok"
-          end
+          page.sendRequest      
           Watir::Wait.until{ page.errorReference !="" }
         end
       end      
     end
   end
-
-
 
 context "Dates of event"  do
   
