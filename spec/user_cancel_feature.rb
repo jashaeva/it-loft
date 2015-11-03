@@ -31,8 +31,7 @@ describe "Create and cancel event. " do
     divRequests.each do |request|   
       if request.div(class: "text-20 orange").text == "Happy New Year celebrating -- test"          
         buttonAccept = request.div(class: "col-xs-12 col-sm-2 admin-btn-margin-top").button(class: "js-add-rq btn btn-xs btn-green admin-btn-margin")
-        ev_ID = buttonAccept.attribute_value("ev_id")
-        STDERR.puts "cancel ev_ID = "+ ev_ID
+        ev_ID = buttonAccept.attribute_value("ev_id")        
         buttonAccept.click        
         break
       end

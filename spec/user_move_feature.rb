@@ -142,8 +142,7 @@ describe "Create and Move event. Delete after all." do
         page = MoveEventPage.new(browser)
         page.default()
         expect( page.errorComment !="").to be_falsey
-        expect( page.errorDate !="").to be_falsey
-        expect( page.response !="").to be_truthy 
+        expect( page.errorDate !="").to be_falsey        
       end
       after (:all) do
         logout()

@@ -1,12 +1,10 @@
 #!/bin/env ruby
 # encoding: utf-8
-require "pry"
-require "rspec/expectations"
+
+# require "pry"
+# require "rspec/expectations"
 
 require_relative '../spec/spec_helper'
-require_relative '../spec/commons/useful_func'
-require_relative '../spec/commons/roots'
-
 require_relative '../spec/commons/UserProfilePage'
 require_relative '../spec/commons/LoginPage'
 
@@ -18,7 +16,7 @@ describe "User Profile Page" do
     page = LoginPage.new(browser, true)
     
     page.login_with('funnicaplanit@yandex.ru', '12345')
-    Watir::Wait.until { browser.url == 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/' }       
+    Watir::Wait.until { browser.url == 'http://itlft.7bits.it/' }           
   end
   
   context "FirstName?" do
