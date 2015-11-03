@@ -28,7 +28,7 @@ describe "Edit Creator Page" do
     page = AdminAddEventPage.new(browser, true)
     page.default()   
     page = AdminPanelEvents.new(browser, true)     
-    Watir::Wait.until{ browser.url == 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/admin/events'}
+    Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events'}
 
     divEvents = browser.divs(class: "row bordered-bottom admin-event-padding")
     divEvents.each do |event|

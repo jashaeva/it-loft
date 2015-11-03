@@ -12,7 +12,8 @@ RSpec.configure do |config|
 
   # Open up the browser for each example.
   config.before :all do
-    @headless = Headless.new
+    display = ENV['BUILD_NUMBER'] || "99"
+    @headless = Headless.new(:display => display)     
     @headless.start
      # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
     @browser = Watir::Browser.new :ff
