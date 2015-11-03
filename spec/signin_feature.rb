@@ -14,9 +14,7 @@ describe "Login Page" do
   end
 
   context 'Email?' do
-    before (:all) do
-      $stdout = File.open("test_data/output", "a")
-      puts "Start testing LoginPage"
+    before (:all) do            
     end
     
     it 'Positive email examples' do       
@@ -25,8 +23,7 @@ describe "Login Page" do
       browser.refresh
       page.username_element.when_present(15)         
       aggregate_failures("good_emails") do
-        emails.each do |email|
-          puts email          
+        emails.each do |email|          
           page.username = email
           page.submit                              
           expect(page.errorName !="").to be_falsey
@@ -35,12 +32,10 @@ describe "Login Page" do
     end
   
     it 'Negative email examples' do  
-      puts 'Negatives ******'  
       page = LoginPage.new(browser, true)      
       emails = File.readlines("test_data/bad_emails.txt")
       aggregate_failures("bad_emails") do
-        emails.each do |email|
-          puts email
+        emails.each do |email|          
           page.username = email
           page.submit          
           expect(page.errorName !="").to be_truthy
@@ -55,7 +50,7 @@ describe "Login Page" do
       browser.refresh
       page.password_element.when_present
       page.password = ""
-      page.submit
+      page.submit      
       expect(page.errorPassword !="").to be_truthy
     end
     it "wrong password" do
@@ -65,7 +60,8 @@ describe "Login Page" do
       page.username = "funnycaplanit@yandex.ru"
       page.password = "123451234512345"
       page.submit
-      Watir::Wait.until {browser.url == FAIL_URL }
+      # binding.pry
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/login-fail" }
     end
     it "short password" do
       page = LoginPage.new(browser, true)      
@@ -74,7 +70,7 @@ describe "Login Page" do
       page.password ="1"
       page.submit
       expect(page.errorPassword !="").to be_truthy
-      # Watir::Wait.until {browser.url == FAIL_URL }
+      # Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/login-fail" }
     end
     it "long password" do
       page = LoginPage.new(browser, true)    
@@ -83,7 +79,7 @@ describe "Login Page" do
       page.password = str(257)
       page.submit
       expect(page.errorPassword !="").to be_truthy
-      # Watir::Wait.until {browser.url == FAIL_URL }
+      # Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/login-fail"}
     end    
   end
 
@@ -95,7 +91,8 @@ describe "Login Page" do
       page.username = "fun@yandex.ru"
       page.password = "123451234512345"
       page.submit
-      Watir::Wait.until {browser.url == FAIL_URL }
+      # binding.pry
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/login-fail" }
     end
 
     it "positive case"  do
@@ -105,7 +102,8 @@ describe "Login Page" do
       page.username = "funnycaplanit@yandex.ru"
       page.password = "12345"
       page.submit     
-      Watir::Wait.until {browser.url == TEST_URL }      
+      # binding.pry
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/" }      
       log_out = button(class: "btn-hover btn-main", text: "Выход").visible? || 
                 button(class: "btn-hover btn-main", text: "Logout").visible? 
       expect(log_out).to be_truthy
