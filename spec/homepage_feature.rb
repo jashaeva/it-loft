@@ -330,8 +330,7 @@ describe "RequestForEvent" do
           page.next_day(2)
           page.choose_hour(20)
           page.choose_minute(3)
-          page.sendRequest
-          page.save_screenshot "test_data/screenshots/endDate.png"
+          page.sendRequest          
           expect( page.errorDate !="").to be_truthy            
       end
 
@@ -346,7 +345,6 @@ describe "RequestForEvent" do
           page.choose_hour(20)
           page.choose_minute(3)
           page.sendRequest
-          page.save_screenshot "test_data/screenshots/startDate.png"
           expect( page.errorDate !="").to be_truthy            
       end
     
@@ -367,7 +365,6 @@ describe "RequestForEvent" do
         page.choose_hour(20)
         page.choose_minute(3)
         page.sendRequest      
-        page.save_screenshot "test_data/screenshots/endDate1.png"
         expect( page.errorDate !="").to be_truthy  
       end
 
@@ -387,10 +384,8 @@ describe "RequestForEvent" do
         page.next_day(4)
         page.choose_hour(10)
         page.choose_minute(3)
-        page.sendRequest      
-        page.save_screenshot "test_data/screenshots/endDate2.png"
+        page.sendRequest              
         expect( page.errorDate !="").to be_truthy  
-
       end
     end
 

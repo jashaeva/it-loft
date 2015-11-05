@@ -48,24 +48,24 @@ describe "Restore password" do
       page = HomePage.new(browser, true)            
       local_en = link(class: "locales_menu_en locale_language") 
       local_en.click if local_en.visible?   
-      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/"}
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/"}
       page = RestorePasswordPage.new(browser, true)      
       page.email_element.when_visible(15)
       page.email = "jblank@list.ru"
       page.restore      
-      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/"}      
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/"}      
     end
 
     it "positive example, email in DB rus_locale" do
       page = HomePage.new(browser, true)            
       local_rus=link(class: "locales_menu_rus locale_language")      
       local_rus.click if local_rus.visible?
-      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/"}
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/"}
       page = RestorePasswordPage.new(browser, true)      
       page.email_element.when_visible
       page.email = "jblank@list.ru"      
       page.restore      
-      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/"}
+      Watir::Wait.until {browser.url == "http://itlft.7bits.it/"}
 
       # browser.goto "https://mail.ru"
       # text_field(name: "Login").set "jblank@list.ru"
