@@ -13,8 +13,8 @@ RSpec.configure do |config|
   # Open up the browser for each example.
   config.before :all do
     display = ENV['BUILD_NUMBER'] || "99"
-    @headless = Headless.new(:display => display)     
-    @headless.start
+    # @headless = Headless.new(:display => display)     
+    # @headless.start
      # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
     @browser = Watir::Browser.new :ff
     #prefs = {
@@ -31,7 +31,7 @@ RSpec.configure do |config|
   # Close that browser after each example.
   config.after :all do
     @browser.close if @browser
-    @headless.destroy
+    # @headless.destroy
   end
 
   # Include RSpec::Helper into each of your example group for making it possible to

@@ -3,22 +3,21 @@
 require "pry"
 
 require_relative '../spec/spec_helper'
-require_relative '../spec/commons/useful_func'
 require_relative '../spec/commons/HomePageShort'
 require_relative '../spec/commons/LoginPage'
-require_relative '../spec/commons/roots'
+
 
 describe "RequestForEvent, short form" do
  
   before (:all) do   
     
     page = LoginPage.new(browser, true)
-    browser.refresh
+    # browser.refresh
     page.username_element.when_visible
     page.username = 'funnicaplanit@yandex.ru'
     page.password = '12345'
     page.submit
-    Watir::Wait.until { browser.url == TEST_URL }
+    Watir::Wait.until { browser.url == 'http://itlft.7bits.it/' }
   end
   
   context "EventTitle?" do
@@ -118,14 +117,13 @@ describe "RequestForEvent, short form" do
   end  
   
   context 'URL?' do
-    before (:all)  do
-      $stdout = File.open("test_data/url_output", "a")
-      puts "Start testing urls **********"
-    end
+    # before (:all)  do
+    #   $stdout = File.open("test_data/url_output", "a")
+    #   puts "Start testing urls **********"
+    # end
 
     it 'Positive URL examples' do
       page = HomePageShort.new(browser, true)       
-      i=0
       urls = File.readlines("test_data/good_url.txt")      
       aggregate_failures("good_url") do
         urls.each do |url|
@@ -136,17 +134,14 @@ describe "RequestForEvent, short form" do
       end          
     end  
 
-    it 'Negative URL examples' do
-      page = HomePageShort.new(browser, true)
-      puts "Negatives *** short form ***"
-      i=0
+    it 'Negative URL examples' do      
       urls = File.readlines("test_data/bad_url.txt")      
       aggregate_failures("bad_url") do
         urls.each do |url|
+          page = HomePageShort.new(browser, true)
           page.eventReference = url
-          page.sendRequest
-          expect(page.errorReference != "").to be_truthy
-          # Watir::Wait.until{ page.errorReference != ""}          
+          page.sendRequest       
+          Watir::Wait.until{ page.errorReference != ""}            
         end
       end      
     end   
@@ -201,33 +196,33 @@ describe "RequestForEvent, short form" do
     
     it 'Start date can not be empty ' do
       page = HomePageShort.new(browser, true)
-      browser.refresh
-        page.eventEndDate_element.when_visible
-        page.eventEndDate_element.click
-        page.next_month_e       
-        page.next_day(2)
-        page.choose_hour(20)
-        page.choose_minute(3)
-        page.sendRequest
-        expect( page.errorDate !="").to be_truthy            
+     
+      page.eventEndDate_element.when_visible
+      page.eventEndDate_element.click
+      page.next_month_e       
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
+      page.sendRequest
+      expect( page.errorDate !="").to be_truthy            
     end
 
     it 'End date can not be empty ' do
       page = HomePageShort.new(browser, true)
-      browser.refresh      
-      #binding.pry  
-        page.eventStartDate_element.when_visible
-        page.eventStartDate_element.click
-        page.next_month_s       
-        page.next_day(2)
-        page.choose_hour(20)
-        page.choose_minute(3)
-        page.sendRequest        
-        expect( page.errorDate !="").to be_truthy            
+   
+      page.eventStartDate_element.when_visible
+      page.eventStartDate_element.click
+      page.next_month_s       
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
+      page.sendRequest        
+      expect( page.errorDate !="").to be_truthy            
     end
 
     it 'If startDate===endDate' do
       page = HomePageShort.new(browser, true)
+ 
       page.eventEndDate_element.when_visible
       page.eventEndDate_element.click
       page.next_month_e
@@ -248,6 +243,7 @@ describe "RequestForEvent, short form" do
 
     it 'Start date should be less than end date' do
       page = HomePageShort.new(browser, true)
+      
       page.eventEndDate_element.when_visible
       page.eventEndDate_element.click
       page.next_month_e

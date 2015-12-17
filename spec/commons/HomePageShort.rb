@@ -1,5 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
+require 'pry'
 require 'page-object'
 require 'selenium/webdriver'
 
@@ -63,10 +64,12 @@ class HomePageShort
   end  
 
   def next_month_e    
+
       browser.element(xpath: "html/body/div[5]/div[3]/table/thead/tr/th[3]").click
   end
 
   def next_month_s    
+
       browser.element(xpath: "html/body/div[4]/div[3]/table/thead/tr[1]/th[3]").click    
   end
 
