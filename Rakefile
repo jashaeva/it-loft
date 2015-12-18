@@ -11,7 +11,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.fail_on_error = false
   t.rspec_opts = %w[--color]
   t.verbose = false
-  t.pattern = "#{TEST_HOME}/spec/**/rest*feature.rb"  
+  t.pattern = "#{TEST_HOME}/spec/**/*feature.rb"  
 end
 
 desc "Defaults"
