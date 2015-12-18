@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 
-# require 'pry'
+require 'pry'
 require_relative '../spec/spec_helper'
 require_relative '../spec/commons/RestorePassword'
 require_relative '../spec/commons/HomePage'
@@ -12,14 +12,14 @@ describe "Restore password" do
   
 
     it 'read emails from file, valid email, but didnot signed in system' do 
-      emails = File.readlines("test_data/good_emails.txt")      
-      page = RestorePasswordPage.new(browser, true)
-      browser.refresh      
-      page.email_element.when_visible
-      aggregate_failures("good_emails") do
-        emails.each do |email|           
-          page.email = email
-          page.error_element.when_visible
+      emails = File.readlines("test_data/good_emails.txt")           
+      aggregate_failures("good_emails") do        
+        emails.each do |email|                   
+          page = RestorePasswordPage.new(browser, true)
+          page.email_element.when_visible
+          page.email = email.chop
+          page.restore
+          page.error_element.when_visible         
           expect(page.error !="").to be_truthy
         end
       end
@@ -28,14 +28,14 @@ describe "Restore password" do
 
   context 'Negative examples' do
     it 'read emails from file, get error message' do            
-      emails = File.readlines("test_data/bad_emails.txt")      
-      page = RestorePasswordPage.new(browser, true)
-      browser.refresh      
-      page.email_element.when_visible
-      aggregate_failures("bad_emails") do
-        emails.each do |email|          
-          page.email = email
-          page.error_element.when_visible          
+      emails = File.readlines("test_data/bad_emails.txt")            
+      aggregate_failures("bad_emails") do        
+        emails.each do |email|                    
+          page = RestorePasswordPage.new(browser, true)
+          page.email_element.when_visible
+          page.email = email.chop
+          page.restore
+          page.error_element.when_visible
           expect(page.error !="").to be_truthy           
         end
       end     
