@@ -7,6 +7,6 @@ require_relative 'LoginFailPage'
 class AdminPanelRequests
   include PageObject
   
-  page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/admin/requests'
+  page_url 'http://itlft.7bits.it/admin/requests'
     
 end

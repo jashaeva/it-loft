@@ -6,6 +6,7 @@ require 'selenium/webdriver'
 class AdminPanelEvents
   include PageObject
   
-  page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/admin/events'
+  # page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/admin/events'
+    page_url 'http://itlft.7bits.it/admin/events'
     
 end

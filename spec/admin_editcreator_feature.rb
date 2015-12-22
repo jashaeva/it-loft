@@ -20,7 +20,7 @@ describe "Edit Creator Page" do
   before (:all) do          
     page = LoginPage.new(browser, true)
     page.username_element.when_visible    
-    page.login_with('admin@itlft.omsk', 'admin' )
+    page.login_with( "admin@itlft.omsk", "admin" )
 
    
     Watir::Wait.until { browser.url == 'http://itlft.7bits.it/admin/requests' }    
@@ -38,6 +38,7 @@ describe "Edit Creator Page" do
 
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[1]
         hRef = btnEdit.attribute_value("href")
+
         btnEdit.click        
         break
       end
@@ -175,12 +176,7 @@ describe "Edit Creator Page" do
 
 
   after (:all) do
-    browser.goto hRefEv if (browser.url != hRefEv)
-    page = AdminEditEventPage.new(browser)
-    page.check_enabled if (! page.enabled_checked?)
-    page.sendRequest
-
-    page = AdminPanelEvents.new(browser, true)
+    page = AdminPanelEvents.new(browser, true)    
     divReq = browser.divs(class: "row bordered-bottom admin-event-padding")
       divReq.each do |event|
         if event.div(class: "text-20 orange").text == "New Year celebration event"          
@@ -191,6 +187,17 @@ describe "Edit Creator Page" do
           break
         end
       end        
+    page = AdminPanelRequests.new(browser, true)    
+    divReq = browser.divs(class: "row requests-block")  
+      divReq.each do |event|                    
+        if event.div(class: "col-xs-12 col-sm-7 request-padding").div(class: "text-20 orange").text == "New Year celebration event"                    
+          btnDel = event.div(class: "col-xs-12 col-sm-2 admin-btn-margin-top").button(class: "js-btn-ev btn btn-xs btn-blue admin-btn-margin")
+          btnDel.click
+          Watir::Wait.until { browser.alert.exists? }
+          browser.alert.ok
+          break
+        end
+      end          
     logout() 
   end
 end
