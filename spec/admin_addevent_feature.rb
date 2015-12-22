@@ -1,6 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
-require "pry"
+# require "pry"
 
 require_relative '../spec/spec_helper'
 
@@ -12,8 +12,7 @@ require_relative '../spec/commons/LoginPage'
 describe "AddEvent from AdminPanel" do
  
   before (:all) do       
-    page = LoginPage.new(browser, true)
-    browser.refresh
+    page = LoginPage.new(browser, true)    
     page.login_with('admin@itlft.omsk', 'admin' )
     Watir::Wait.until { browser.url == 'http://itlft.7bits.it/admin/requests' }    
   end
@@ -132,7 +131,9 @@ describe "AddEvent from AdminPanel" do
       aggregate_failures("bad_url") do
         urls.each do |url|
           page.eventReference = url
-          page.sendRequest          
+          page.sendRequest
+          puts url
+          puts page.errorReference
           Watir::Wait.until{ page.errorReference != ""}
         end
       end      
@@ -149,7 +150,7 @@ describe "AddEvent from AdminPanel" do
       page.next_day(2)
       page.choose_hour(20)
       page.choose_minute(3)
-      page.sendRequest      
+      page.sendRequest         
       expect( page.errorDate_element.text !="").to be_truthy            
     end
 

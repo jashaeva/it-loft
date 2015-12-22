@@ -15,8 +15,8 @@ RSpec.configure do |config|
     display = ENV['BUILD_NUMBER'] || "99"
     @headless = Headless.new(:display => display)     
     @headless.start
-     # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
-    @browser = Watir::Browser.new :ff
+    @browser = Watir::Browser.new (ENV['browser'] || :ff) 
+    # @browser = Watir::Browser.new :ff
     #prefs = {
     #  :download => {
     #    :prompt_for_download => false,
