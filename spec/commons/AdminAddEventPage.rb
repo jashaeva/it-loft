@@ -50,8 +50,9 @@ class AdminAddEventPage
     sendRequest
   end  
 
-  def default_no(data = {})
-    populate_page_with DEFAULT_DATA.merge(data)  
+  def default_no()
+    self.eventTitle = 'New Year celebration event'
+    self.eventDescription = 'Just description'
     
     self.eventEndDate_element.click
     self.next_month_e
@@ -66,7 +67,7 @@ class AdminAddEventPage
     self.choose_minute(1)
 
     self.uncheck_enabled
-    sendRequest
+    sendRequest    
   end  
 
   def next_month_e    
