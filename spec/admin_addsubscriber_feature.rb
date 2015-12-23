@@ -1,7 +1,5 @@
 #!/bin/env ruby
 # encoding: utf-8
-require "pry"
-
 require_relative '../spec/spec_helper'
 
 require_relative '../spec/commons/LoginPage'

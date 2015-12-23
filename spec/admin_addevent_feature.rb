@@ -1,6 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
-# require "pry"
+require "pry"
 
 require_relative '../spec/spec_helper'
 
@@ -132,8 +132,6 @@ describe "AddEvent from AdminPanel" do
         urls.each do |url|
           page.eventReference = url
           page.sendRequest
-          puts url
-          puts page.errorReference
           Watir::Wait.until{ page.errorReference != ""}
         end
       end      
@@ -150,7 +148,8 @@ describe "AddEvent from AdminPanel" do
       page.next_day(2)
       page.choose_hour(20)
       page.choose_minute(3)
-      page.sendRequest         
+      page.sendRequest      
+    
       expect( page.errorDate_element.text !="").to be_truthy            
     end
 
@@ -164,6 +163,7 @@ describe "AddEvent from AdminPanel" do
       page.choose_hour(20)
       page.choose_minute(3)
       page.sendRequest      
+    
       expect( page.errorDate_element.text !="").to be_truthy            
     end
   
@@ -183,7 +183,8 @@ describe "AddEvent from AdminPanel" do
       page.next_day(2)
       page.choose_hour(20)
       page.choose_minute(3)
-      page.sendRequest            
+      page.sendRequest     
+    
       expect( page.errorDate_element.text !="").to be_truthy  
     end
 
@@ -203,7 +204,8 @@ describe "AddEvent from AdminPanel" do
       page.next_day(4)
       page.choose_hour(10)
       page.choose_minute(3)
-      page.sendRequest            
+      page.sendRequest     
+          
       expect( page.errorDate_element.text !="").to be_truthy  
     end
   end
@@ -228,8 +230,7 @@ describe "AddEvent from AdminPanel" do
       end        
     end
 
-    it "Check Enabled = false" do
-      browser.refresh
+    it "Check Enabled = false" do      
       page = AdminAddEventPage.new(browser, true)      
       page.default_no()
       page = AdminPanelEvents.new(browser,true)
