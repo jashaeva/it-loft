@@ -1,6 +1,5 @@
 #!/bin/env ruby
 # encoding: utf-8
-require "pry"
 
 require_relative '../spec/spec_helper'
 require_relative '../spec/commons/HomePageShort'
@@ -11,19 +10,19 @@ describe "RequestForEvent, short form" do
  
   before (:all) do   
     
-    page = LoginPage.new(browser, true)
-    # browser.refresh
+    page = LoginPage.new(browser, true)    
     page.username_element.when_visible
     page.username = 'funnicaplanit@yandex.ru'
     page.password = '12345'
     page.submit
-    Watir::Wait.until { browser.url == 'http://itlft.7bits.it/' }
+
+    # Watir::Wait.until { browser.url == 'http://itlft.7bits.it/' }
+    # STDERR.puts "URL = " + browser.url    
   end
   
   context "EventTitle?" do
     it "non-empty?" do      
-      page = HomePageShort.new(browser, true)
-      browser.refresh
+      page = HomePageShort.new(browser, true)      
       page.eventTitle_element.when_visible      
       page.eventTitle = ""
       page.sendRequest
@@ -147,51 +146,6 @@ describe "RequestForEvent, short form" do
     end   
   end
 
-## Fast send to server 
-  # context 'Subscriber?' do
-  #     before (:all) do
-  #       $stdout = File.open("test_data/output", "a")
-  #       puts "Start testing subscriber emails  ********"
-  #     end
-      
-  #     it 'Positive email examples' do 
-  #       emails = File.readlines("test_data/good_emails.txt")
-  #       page = HomePageShort.new(browser, true)      
-  #       browser.refresh
-  #       scrncounter=0
-  #       page.subscriber_element.when_visible
-  #       aggregate_failures("good_emails") do
-  #         emails.each do |email|
-  #           puts email                    
-  #           page.subscriber = email
-  #           # page.subscribe          
-  #           page.errorSubscriberEmail_element.when_visible
-  #           expect( HomePageShort::SuccessMessageArray ).to include (page.errorSubscriberEmail_element.text)             
-  #           puts page.errorSubscriberEmail_element.text          
-  #           scrncounter+=1          
-  #         end
-  #       end
-  #     end  
-  #     it 'Negative email examples' do  
-  #       puts 'Negatives ********************'  
-  #       page = HomePageShort.new(browser, true)      
-  #       scrncounter=0
-  #       emails = File.readlines("test_data/bad_emails.txt")
-  #       aggregate_failures("bad_emails") do
-  #         emails.each do |email|
-  #           puts email
-  #           page.subscriber = email
-  #           page.subscribe 
-  #           page.errorSubscriberEmail_element.when_visible(10)
-  #           puts page.errorSubscriberEmail_element.text
-  #           expect( HomePageShort::ErrorMessageArray ).to include (page.errorSubscriberEmail_element.text)                  
-  #           browser.screenshot.save "test_data/screenshots/sub#{scrncounter.to_s}:neg.png"
-  #           scrncounter+=1
-  #         end
-  #       end
-  #     end
-  #   end
-
   context "Dates of event"  do
     
     it 'Start date can not be empty ' do
@@ -261,5 +215,9 @@ describe "RequestForEvent, short form" do
       page.sendRequest  
       expect( page.errorDate !="").to be_truthy  
     end    
+  end
+  
+  after (:all) do
+    logout()
   end
 end

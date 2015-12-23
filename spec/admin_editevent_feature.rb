@@ -32,6 +32,9 @@ describe "Edit Event from AdminPanel" do
       if event.div(class: "text-20 orange").text == "New Year celebration event"                        
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[0]
         hRef = btnEdit.attribute_value("href")         
+        STDERR.puts "hRef = " + hRef
+        STDERR.puts "URL = " + browser.url
+      
         btnEdit.click        
         break
       end
@@ -40,6 +43,8 @@ describe "Edit Event from AdminPanel" do
   
    context "EventTitle?" do
     before (:each) do
+      STDERR.puts "hRef = " + hRef
+      STDERR.puts "URL = " + browser.url
       browser.goto hRef if (browser.url != hRef)
       browser.refresh
     end
