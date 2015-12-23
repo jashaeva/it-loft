@@ -17,7 +17,9 @@ describe "Edit Creator Page" do
   hRef = nil
   hRefEv = nil
 
-  before (:all) do          
+  before (:all) do
+  # binding.pry
+
     page = LoginPage.new(browser, true)
     page.username_element.when_visible    
     page.login_with( "admin@itlft.omsk", "admin" )
@@ -35,9 +37,9 @@ describe "Edit Creator Page" do
       if event.div(class: "text-20 orange").text == "New Year celebration event"                        
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[0]
         hRefEv = btnEdit.attribute_value("href")
-
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[1]
         hRef = btnEdit.attribute_value("href")
+        # STDERR.puts "URL == " + hRef
 
         btnEdit.click        
         break
