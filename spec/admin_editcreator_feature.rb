@@ -18,16 +18,15 @@ describe "Edit Creator Page" do
   hRefEv = nil
 
   before (:all) do
-  # binding.pry
-
+  
     page = LoginPage.new(browser, true)
     page.username_element.when_visible    
-    page.login_with( "admin@itlft.omsk", "admin" )
-
-   
-    Watir::Wait.until { browser.url == 'http://itlft.7bits.it/admin/requests' }    
+    page.login_with( "admin@itlft.omsk", "admin" )   
+    Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/requests' }    
    
     page = AdminAddEventPage.new(browser, true)
+    Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/event' }    
+
     page.default()   
     page = AdminPanelEvents.new(browser, true)     
     Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events'}
@@ -39,9 +38,8 @@ describe "Edit Creator Page" do
         hRefEv = btnEdit.attribute_value("href")
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[1]
         hRef = btnEdit.attribute_value("href")
-        # STDERR.puts "URL == " + hRef
-
-        btnEdit.click        
+        btnEdit.click
+        browser.wait_until{browser.button(id: "js-submit-rq").exists?}
         break
       end
     end            
@@ -186,6 +184,7 @@ describe "Edit Creator Page" do
           btnDel.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
       end        
@@ -197,6 +196,7 @@ describe "Edit Creator Page" do
           btnDel.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
       end          

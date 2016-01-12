@@ -1,30 +1,29 @@
 #!/bin/env ruby
 # encoding: utf-8
-
+require 'pry'
+require 'rspec/expectations'
 require_relative '../spec/spec_helper'
 require_relative '../spec/commons/HomePageShort'
 require_relative '../spec/commons/LoginPage'
 
 
 describe "RequestForEvent, short form" do
- 
-  before (:all) do   
-    
-    page = LoginPage.new(browser, true)    
+  before (:all) do      
+    page = LoginPage.new(browser, true)
     page.username_element.when_visible
     page.username = 'funnicaplanit@yandex.ru'
     page.password = '12345'
     page.submit
-
-    # Watir::Wait.until { browser.url == 'http://itlft.7bits.it/' }
-    # STDERR.puts "URL = " + browser.url    
+    # puts browser.url
+    Watir::Wait.until { browser.url == 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/' }
+    # puts browser.url
   end
-  
+
   context "EventTitle?" do
     it "non-empty?" do      
       page = HomePageShort.new(browser, true)      
       page.eventTitle_element.when_visible      
-      page.eventTitle = ""
+      page.eventTitle = "" 
       page.sendRequest
       expect(page.errorTitle !="").to be_truthy
     end
@@ -116,11 +115,6 @@ describe "RequestForEvent, short form" do
   end  
   
   context 'URL?' do
-    # before (:all)  do
-    #   $stdout = File.open("test_data/url_output", "a")
-    #   puts "Start testing urls **********"
-    # end
-
     it 'Positive URL examples' do
       page = HomePageShort.new(browser, true)       
       urls = File.readlines("test_data/good_url.txt")      

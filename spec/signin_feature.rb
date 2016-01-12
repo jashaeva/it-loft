@@ -46,22 +46,20 @@ describe "Login Page" do
   
   context "Password?" do
     it "password can not be empty" do
-      page = LoginPage.new(browser, true)
-      browser.refresh
+      page = LoginPage.new(browser, true)   
       page.password_element.when_present
       page.password = ""
       page.submit      
       expect(page.errorPassword !="").to be_truthy
     end
     it "wrong password" do
-      page = LoginPage.new(browser, true)
-      browser.refresh
+      page = LoginPage.new(browser, true)      
       page.password_element.when_present
       page.username = "funnycaplanit@yandex.ru"
       page.password = "123451234512345"
       page.submit
       # binding.pry
-      Watir::Wait.until {browser.url == "http://itlft.7bits.it/login-fail" }
+      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/login-fail" }
     end
     it "short password" do
       page = LoginPage.new(browser, true)      
@@ -92,7 +90,7 @@ describe "Login Page" do
       page.password = "123451234512345"
       page.submit
       # binding.pry
-      Watir::Wait.until {browser.url == "http://itlft.7bits.it/login-fail" }
+      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/login-fail" }
     end
 
     it "positive case"  do
@@ -103,7 +101,7 @@ describe "Login Page" do
       page.password = "12345"
       page.submit     
       # binding.pry
-      Watir::Wait.until {browser.url == "http://itlft.7bits.it/" }      
+      Watir::Wait.until {browser.url == "http://sevenbits:10ytuhbnzn@itlft.7bits.it/" }      
       log_out = button(class: "btn-hover btn-main", text: "Выход").visible? || 
                 button(class: "btn-hover btn-main", text: "Logout").visible? 
       expect(log_out).to be_truthy

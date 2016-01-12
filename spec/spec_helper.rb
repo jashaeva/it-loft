@@ -31,7 +31,7 @@ RSpec.configure do |config|
   # Close that browser after each example.
   config.after :all do
     @browser.close if @browser
-    @headless.destroy
+    @headless.destroy_sync
   end
 
   # Include RSpec::Helper into each of your example group for making it possible to

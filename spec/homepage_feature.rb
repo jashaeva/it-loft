@@ -3,7 +3,6 @@
 require "pry"
 
 require_relative '../spec/spec_helper'
-# require_relative '../spec/commons/useful_func'
 require_relative '../spec/commons/HomePage'
 
 describe "RequestForEvent" do

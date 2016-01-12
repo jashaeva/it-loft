@@ -14,14 +14,11 @@ require_relative '../spec/commons/LoginPage'
 describe "Edit Event from AdminPanel" do
   hRef = nil
 
-  before (:all) do       
+  before (:all) do          
     page = LoginPage.new(browser, true)
     page.login_with("admin@itlft.omsk", "admin" )    
     Watir::Wait.until { browser.url == 'http://itlft.7bits.it/admin/requests' }    
 
-    # page = AdminPanelEvents.new(browser, true)     
-    # Watir::Wait.until{browser.url == 'http://itlft.7bits.it/admin/events'}
-    
     page = AdminAddEventPage.new(browser, true)
     page.default()     
     page = AdminPanelEvents.new(browser, true)     
@@ -31,22 +28,17 @@ describe "Edit Event from AdminPanel" do
     divEvents.each do |event|
       if event.div(class: "text-20 orange").text == "New Year celebration event"                        
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[0]
-        hRef = btnEdit.attribute_value("href")         
-        STDERR.puts "hRef = " + hRef
-        STDERR.puts "URL = " + browser.url
-      
-        btnEdit.click        
+        hRef = btnEdit.attribute_value("href")       
+        btnEdit.click 
+        browser.wait_until{browser.button(id: "js-submit-ev").exists?}       
         break
       end
     end
   end
   
-   context "EventTitle?" do
-    before (:each) do
-      STDERR.puts "hRef = " + hRef
-      STDERR.puts "URL = " + browser.url
-      browser.goto hRef if (browser.url != hRef)
-      browser.refresh
+  context "EventTitle?" do
+    before (:each) do     
+      browser.goto hRef if (browser.url != hRef)      
     end
 
     it "non-empty?" do        
@@ -243,7 +235,6 @@ describe "Edit Event from AdminPanel" do
   context "CheckBox Enabled" do
     before (:each) do
       browser.goto hRef if (browser.url != hRef)
-      browser.refresh
     end
 
     it "Check Enabled = true" do       
@@ -262,6 +253,8 @@ describe "Edit Event from AdminPanel" do
       page.uncheck_enabled
       page.sendRequest
       page = AdminPanelEvents.new(browser, true)
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events' }
+
       expect( browser.text.include? "New Year celebration event").to be_falsey
       page = AdminPanelRequests.new(browser, true)
       expect( browser.text.include? "New Year celebration event").to be_truthy                    
@@ -277,6 +270,7 @@ describe "Edit Event from AdminPanel" do
           btnDel.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
       end        
@@ -288,6 +282,7 @@ describe "Edit Event from AdminPanel" do
           btnDel.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
       end          

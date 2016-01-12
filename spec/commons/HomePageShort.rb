@@ -7,7 +7,8 @@ require 'selenium/webdriver'
 class HomePageShort
   include PageObject
 
-  page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/'
+  # page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/'
+  page_url 'http://itlft.7bits.it/'
   
 
   ErrorMessageArray = [ 

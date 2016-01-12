@@ -11,4 +11,5 @@ group :test do
   gem 'selenium-client'
   gem 'page-object'  
   gem 'chromedriver-helper'
+  gem 'rspec-expectations'
 end

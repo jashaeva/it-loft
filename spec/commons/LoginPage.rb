@@ -7,7 +7,7 @@ require_relative 'LoginFailPage'
 class LoginPage
   include PageObject
   page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/login'
-  
+  # page_url 'http://itlft.7bits.it/login'
   
 
   DEFAULT_DATA = {       
@@ -17,12 +17,12 @@ class LoginPage
   
   #form
   text_field(:username,    name: "username" )
-  text_field(:password,     name: "password")
+  text_field(:password,    name: "password")
   
   button(:submit, id: "js-submit-login")
 
   # Exception  
-  div(:errorName,    class: "form-error login-error-email")
+  div(:errorName,     class: "form-error login-error-email")
   div(:errorPassword, class: "form-error login-error-password")
 
   def default(data = {})
@@ -33,7 +33,7 @@ class LoginPage
   def login_with(t_username, t_password)
     self.username = t_username
     self.password = t_password
-    self.submit
+    submit
   end
   
 end

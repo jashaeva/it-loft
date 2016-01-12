@@ -210,14 +210,20 @@ describe "AddEvent from AdminPanel" do
     end
   end
 
-  context "CheckBox Enabled" do
+  context "CheckBox"  do
     it "Check Enabled = true" do        
-      page = AdminAddEventPage.new(browser, true)
-      page.default()    
+      page = AdminAddEventPage.new(browser, true)    
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/event' }
+      page.default()          
+      
       page = AdminPanelRequests.new(browser,true)
-      expect( browser.text.include? "New Year celebration event").to be_falsey        
+      Watir::Wait.until{ browser.url ==  'http://itlft.7bits.it/admin/requests' }
+      expect( browser.text.include? "New Year celebration event").to be_falsey
+
       page = AdminPanelEvents.new(browser,true)
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events' }
       expect( browser.text.include? "New Year celebration event").to be_truthy
+
       divRequests = browser.divs(class: "row bordered-bottom admin-event-padding")
       divRequests.each do |request|
         if request.div(class: "text-20 orange").text == "New Year celebration event"
@@ -225,18 +231,26 @@ describe "AddEvent from AdminPanel" do
           buttonDelete.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
-      end        
+      end
+      expect(browser.text.include? "New Year celebration event").to be_falsey      
     end
 
     it "Check Enabled = false" do      
-      page = AdminAddEventPage.new(browser, true)      
+      page = AdminAddEventPage.new(browser, true)
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/event' }
+
       page.default_no()
       page = AdminPanelEvents.new(browser,true)
-      expect( browser.text.include? "New Year celebration event").to be_falsey
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events' }
+      expect( browser.text.include? "New Year celebration event").to be_falsey      
+      
       page = AdminPanelRequests.new(browser,true)
-      expect( browser.text.include? "New Year celebration event").to be_truthy              
+      Watir::Wait.until{ browser.url ==  'http://itlft.7bits.it/admin/requests' }
+      expect( browser.text.include? "New Year celebration event").to be_truthy
+
       divRequests = browser.divs(class: "row requests-block")
       divRequests.each do |request|
         if request.div(class: "text-20 orange").text == "New Year celebration event"
@@ -244,9 +258,11 @@ describe "AddEvent from AdminPanel" do
           buttonDelete.click
           Watir::Wait.until { browser.alert.exists? }
           browser.alert.ok
+          browser.element(text: "New Year celebration event").wait_while_present 
           break
         end
       end
+      expect(browser.text.include? "New Year celebration event").to be_falsey      
     end 
   end
 
