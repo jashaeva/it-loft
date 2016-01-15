@@ -38,7 +38,8 @@ describe "Edit Event from AdminPanel" do
   
   context "EventTitle?" do
     before (:each) do     
-      browser.goto hRef if (browser.url != hRef)      
+      browser.goto hRef if (browser.url != hRef)   
+      browser.wait_until{browser.button(id: "js-submit-ev").exists?}    
     end
 
     it "non-empty?" do        
@@ -46,55 +47,68 @@ describe "Edit Event from AdminPanel" do
       page.eventTitle_element.when_visible      
       page.eventTitle = ""
       page.sendRequest      
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_truthy
     end
 
     it " str = 'Z' " do
-      page = AdminEditEventPage.new(browser )      
+      page = AdminEditEventPage.new(browser )
+      page.eventTitle_element.when_visible
       page.eventTitle = "Z"
       page.sendRequest
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end
     it " str = 'Я' " do
       page = AdminEditEventPage.new(browser)      
+      page.eventTitle_element.when_visible
       page.eventTitle = "Я"
       page.sendRequest
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end
     it " str = 'Zфыпававав' " do
       page = AdminEditEventPage.new(browser)      
+      page.eventTitle_element.when_visible
       page.eventTitle = "Zфыпававав"
       page.sendRequest
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end    
     it " str = 'Анна-Мария Елизавета Д'Эстрэ'" do
       page = AdminEditEventPage.new(browser)      
+      page.eventTitle_element.when_visible
       page.eventTitle = "Анна-Мария Елизавета Д'Эстрэ"
       page.sendRequest      
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end
     it "strlen = 256" do
       page = AdminEditEventPage.new(browser)
-      browser.refresh      
-      page.eventTitle_element.when_visible
+      page.eventTitle_element.when_visible      
       page.eventTitle_element.clear
       page.eventTitle = str(255)    
       page.sendRequest_element.when_visible
       page.sendRequest
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end
     it "str(257)" do
       page = AdminEditEventPage.new(browser)
+      page.eventTitle_element.when_visible
       page.eventTitle = str(256)
       page.sendRequest      
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_truthy
     end
 
     it 'restore old value' do
       page = AdminEditEventPage.new(browser)
+      page.eventTitle_element.when_visible
       page.eventTitle_element.clear      
       page.eventTitle = "New Year celebration event"
       page.sendRequest
+      page.errorTitle_element.when_present
       expect(page.errorTitle !="").to be_falsey
     end
    end  
@@ -102,7 +116,7 @@ describe "Edit Event from AdminPanel" do
   context "EventDescription?" do
     before (:each) do
       browser.goto hRef if (browser.url != hRef)
-      # browser.refresh
+      browser.wait_until{browser.button(id: "js-submit-ev").exists?}         
     end
 
     it "non-empty?" do
@@ -110,48 +124,63 @@ describe "Edit Event from AdminPanel" do
       page.eventDescription_element.when_visible      
       page.eventDescription = ""
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Z' " do
       page = AdminEditEventPage.new(browser)      
+      page.eventDescription_element.when_visible
       page.eventDescription = "Z"
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Я' " do
-      page = AdminEditEventPage.new(browser)      
+      page = AdminEditEventPage.new(browser)    
+      page.eventDescription_element.when_visible  
       page.eventDescription = "Я"
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Zфыпававав' " do
-      page = AdminEditEventPage.new(browser)      
+      page = AdminEditEventPage.new(browser)    
+      page.eventDescription_element.when_visible  
       page.eventDescription = "Zфыпававав"
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end    
     it " str = 'Анна-Мария Елизавета Д'Эстрэ'" do
-      page = AdminEditEventPage.new(browser)      
+      page = AdminEditEventPage.new(browser)    
+      page.eventDescription_element.when_visible  
       page.eventDescription = "Анна-Мария Елизавета Д'Эстрэ"
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end
     it "str(512)" do
       page = AdminEditEventPage.new(browser)
+      page.eventDescription_element.when_visible
       page.eventDescription = str(511)
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_falsey
     end
     it "str(513)" do
       page = AdminEditEventPage.new(browser)
+      page.eventDescription_element.when_visible
       page.eventDescription = str(512)
       page.sendRequest
+      page.errorDescription_element.when_present
       expect(page.errorDescription !="").to be_truthy
     end
     it 'restore old value' do
       page = AdminEditEventPage.new(browser)
+      page.eventDescription_element.when_visible
       page.eventDescription = "Just description of the event."
-      page.sendRequest
+      page.sendRequest      
+      page.errorDescription_element.when_present
       expect(page.errorDescription =="").to be_truthy
     end
   end  
@@ -159,6 +188,7 @@ describe "Edit Event from AdminPanel" do
   context 'URL?' do    
     before (:each) do
       browser.goto hRef if (browser.url != hRef)
+      browser.wait_until{browser.button(id: "js-submit-ev").exists?}   
     end
 
     it 'Positive URL examples' do
@@ -191,6 +221,7 @@ describe "Edit Event from AdminPanel" do
   context "Dates of event"  do  
     before (:each) do
       browser.goto hRef if (browser.url != hRef)   
+      browser.wait_until{browser.button(id: "js-submit-ev").exists?}   
     end
         
     it 'If startDate===endDate' do

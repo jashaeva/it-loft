@@ -20,47 +20,53 @@ describe "AddEvent from AdminPanel" do
   context "EventTitle?" do
     it "non-empty?" do        
       page = AdminAddEventPage.new(browser, true)
-      browser.refresh
       page.eventTitle_element.when_visible      
       page.eventTitle = ""
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_truthy
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_truthy
     end
     it " str = 'Z' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventTitle = "Z"
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_falsey
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_falsey
     end
     it " str = 'Я' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventTitle = "Я"
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_falsey
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_falsey
     end
     it " str = 'Zфыпававав' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventTitle = "Zфыпававав"
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_falsey
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_falsey
     end    
     it " str = 'Анна-Мария Елизавета Д'Эстрэ'" do
       page = AdminAddEventPage.new(browser, true)      
       page.eventTitle = "Анна-Мария Елизавета Д'Эстрэ"
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_falsey
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_falsey
     end
     it "str(256)" do
       page = AdminAddEventPage.new(browser, true)
       page.eventTitle = str(255)
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_falsey
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_falsey
     end
     it "str(257)" do
       page = AdminAddEventPage.new(browser, true)
       page.eventTitle = str(256)
       page.sendRequest
-      expect(page.errorTitle_element.text !="").to be_truthy
+      page.errorTitle_element.when_present
+      expect(page.errorTitle !="").to be_truthy
     end
   end  
 
@@ -71,43 +77,50 @@ describe "AddEvent from AdminPanel" do
       page.eventDescription_element.when_visible      
       page.eventDescription = ""
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Z' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventDescription = "Z"
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Я' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventDescription = "Я"
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end
     it " str = 'Zфыпававав' " do
       page = AdminAddEventPage.new(browser, true)      
       page.eventDescription = "Zфыпававав"
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end    
     it " str = 'Анна-Мария Елизавета Д'Эстрэ'" do
       page = AdminAddEventPage.new(browser, true)      
       page.eventDescription = "Анна-Мария Елизавета Д'Эстрэ"
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end
     it "str(512)" do
       page = AdminAddEventPage.new(browser, true)
       page.eventDescription = str(511)
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_falsey
+      page.errorDescription_element.when_present
+      expect(page.errorDescription !="").to be_falsey
     end
     it "str(513)" do
       page = AdminAddEventPage.new(browser, true)
       page.eventDescription = str(512)
       page.sendRequest
-      expect(page.errorDescription_element.text !="").to be_truthy
+      page.errorDescription_element.when_present      
+      expect(page.errorDescription !="").to be_truthy
     end
   end  
   
@@ -119,7 +132,8 @@ describe "AddEvent from AdminPanel" do
       aggregate_failures("good_url") do
         urls.each do |url|
           page.eventReference = url
-          page.sendRequest           
+          page.sendRequest
+          page.errorDescription_element.when_present      
           expect(page.errorReference !="").to be_falsey
         end
       end          
@@ -132,6 +146,7 @@ describe "AddEvent from AdminPanel" do
         urls.each do |url|
           page.eventReference = url
           page.sendRequest
+          page.errorDescription_element.when_present      
           Watir::Wait.until{ page.errorReference != ""}
         end
       end      
@@ -149,7 +164,8 @@ describe "AddEvent from AdminPanel" do
       page.choose_hour(20)
       page.choose_minute(3)
       page.sendRequest      
-    
+      
+      page.errorDate_element.when_present
       expect( page.errorDate_element.text !="").to be_truthy            
     end
 
@@ -164,6 +180,7 @@ describe "AddEvent from AdminPanel" do
       page.choose_minute(3)
       page.sendRequest      
     
+      page.errorDate_element.when_present
       expect( page.errorDate_element.text !="").to be_truthy            
     end
   
@@ -185,6 +202,7 @@ describe "AddEvent from AdminPanel" do
       page.choose_minute(3)
       page.sendRequest     
     
+      page.errorDate_element.when_present
       expect( page.errorDate_element.text !="").to be_truthy  
     end
 
@@ -205,7 +223,8 @@ describe "AddEvent from AdminPanel" do
       page.choose_hour(10)
       page.choose_minute(3)
       page.sendRequest     
-          
+      
+      page.errorDate_element.when_present
       expect( page.errorDate_element.text !="").to be_truthy  
     end
   end
