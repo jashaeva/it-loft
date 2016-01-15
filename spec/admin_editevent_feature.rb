@@ -102,12 +102,11 @@ describe "Edit Event from AdminPanel" do
   context "EventDescription?" do
     before (:each) do
       browser.goto hRef if (browser.url != hRef)
-      browser.refresh
+      # browser.refresh
     end
 
     it "non-empty?" do
-      page = AdminEditEventPage.new(browser)
-      browser.refresh
+      page = AdminEditEventPage.new(browser)      
       page.eventDescription_element.when_visible      
       page.eventDescription = ""
       page.sendRequest
@@ -149,6 +148,12 @@ describe "Edit Event from AdminPanel" do
       page.sendRequest
       expect(page.errorDescription !="").to be_truthy
     end
+    it 'restore old value' do
+      page = AdminEditEventPage.new(browser)
+      page.eventDescription = "Just description of the event."
+      page.sendRequest
+      expect(page.errorDescription =="").to be_truthy
+    end
   end  
   
   context 'URL?' do    
@@ -157,8 +162,7 @@ describe "Edit Event from AdminPanel" do
     end
 
     it 'Positive URL examples' do
-      page = AdminEditEventPage.new(browser)       
-   
+      page = AdminEditEventPage.new(browser) 
       urls = File.readlines("test_data/good_url.txt")      
       aggregate_failures("good_url") do
         urls.each do |url|                   
@@ -172,7 +176,6 @@ describe "Edit Event from AdminPanel" do
 
     it 'Negative URL examples' do
       page = AdminEditEventPage.new(browser)      
-      i=0
       urls = File.readlines("test_data/bad_url.txt")      
       aggregate_failures("bad_url") do
         urls.each do |url|
@@ -187,8 +190,7 @@ describe "Edit Event from AdminPanel" do
 
   context "Dates of event"  do  
     before (:each) do
-      browser.goto hRef if (browser.url != hRef)
-      browser.refresh
+      browser.goto hRef if (browser.url != hRef)   
     end
         
     it 'If startDate===endDate' do
@@ -238,25 +240,31 @@ describe "Edit Event from AdminPanel" do
     end
 
     it "Check Enabled = true" do       
-      page = AdminEditEventPage.new(browser)        
+      page = AdminEditEventPage.new(browser)
+      page.enabled_element.when_visible
       page.check_enabled
       page.sendRequest 
       page = AdminPanelRequests.new(browser, true)
+      Watir::Wait.until{ browser.url ==  'http://itlft.7bits.it/admin/requests' }
       expect( browser.text.include? "New Year celebration event").to be_falsey        
+      
       page = AdminPanelEvents.new(browser, true)
+      Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events' }
       expect( browser.text.include? "New Year celebration event").to be_truthy
       
     end
 
     it "Check Enabled = false" do 
-      page = AdminEditEventPage.new(browser)              
+      page = AdminEditEventPage.new(browser)  
+      page.enabled_element.when_visible            
       page.uncheck_enabled
-      page.sendRequest
-      page = AdminPanelEvents.new(browser, true)
+      page.sendRequest      
+      page = AdminPanelEvents.new(browser, true)      
       Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events' }
-
       expect( browser.text.include? "New Year celebration event").to be_falsey
+
       page = AdminPanelRequests.new(browser, true)
+      Watir::Wait.until{ browser.url ==  'http://itlft.7bits.it/admin/requests' }
       expect( browser.text.include? "New Year celebration event").to be_truthy                    
     end 
   end

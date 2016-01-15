@@ -24,10 +24,10 @@ RSpec.configure do |config|
      }
     }
     @browser = Watir::Browser.new :chrome, :prefs => prefs
-    @browser.driver.manage.timeouts.implicit_wait = 10          
+    @browser.driver.manage.timeouts.implicit_wait = 15          
      
   end
-
+  
   # Close that browser after each example.
   config.after :all do
     @browser.close if @browser

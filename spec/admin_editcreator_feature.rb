@@ -23,14 +23,15 @@ describe "Edit Creator Page" do
     page.username_element.when_visible    
     page.login_with( "admin@itlft.omsk", "admin" )   
     Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/requests' }    
-   
+   # STDERR.puts "***1"
     page = AdminAddEventPage.new(browser, true)
     Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/event' }    
 
     page.default()   
+  # STDERR.puts "***2 default"
     page = AdminPanelEvents.new(browser, true)     
     Watir::Wait.until{ browser.url == 'http://itlft.7bits.it/admin/events'}
-
+  # STDERR.puts "***3 hRef"
     divEvents = browser.divs(class: "row bordered-bottom admin-event-padding")
     divEvents.each do |event|
       if event.div(class: "text-20 orange").text == "New Year celebration event"                        
@@ -38,8 +39,10 @@ describe "Edit Creator Page" do
         hRefEv = btnEdit.attribute_value("href")
         btnEdit = event.div(class: "col-xs-12 col-sm-3 admin-btn-margin-top").links[1]
         hRef = btnEdit.attribute_value("href")
+        # STDERR.puts "*** hRef = " + hRef
         btnEdit.click
         browser.wait_until{browser.button(id: "js-submit-rq").exists?}
+        # STDERR.puts "*** wait_until"
         break
       end
     end            
