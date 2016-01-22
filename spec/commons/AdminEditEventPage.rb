@@ -5,13 +5,16 @@ require 'selenium/webdriver'
 
 class AdminEditEventPage
   include PageObject
-
+  counter = 0
   DEFAULT_DATA = 
   {
     :eventTitle => 'New Year celebration event EDITED',
     :eventDescription => 'Just description EDITED',
-    :enabled => true
+    :enabled => true    
   }
+  
+  SuccessMessageArray = ["Мероприятие сохранено", "The event is saved"]
+
 
   
   text_field(:eventTitle,       name:"eventTitle")   
@@ -28,7 +31,9 @@ class AdminEditEventPage
   div(:errorTitle, class: "form-error js-error-title")
   div(:errorDescription, class: "form-error js-error-description")
   div(:errorReference,   class: "form-error js-error-reference")
+  div(:result,  id: "js-response-ev")
  
+
   def default(data = {})
     populate_page_with DEFAULT_DATA.merge(data)  
     
@@ -45,7 +50,7 @@ class AdminEditEventPage
     self.next_day(1)
     self.choose_hour(11)
     self.choose_minute(1)
-    sendRequest
+    sendRequest        
   end  
 
   def default_no(data = {})
@@ -122,5 +127,10 @@ class AdminEditEventPage
       mins[count].click 
     end
   end  
-  
+
+  def success     
+    self.result_element.when_present    
+    return SuccessMessageArray.include? self.result
+  end
+
 end
