@@ -16,7 +16,8 @@ class AdminAddEventPage
     :eventDescription => 'Just description',
     :enabled => true
   }
-
+  
+  SuccessMessageArray = ["Мероприятие сохранено", "The event is saved"]
   
   text_field(:eventTitle,       name:"eventTitle")   
   text_field(:eventStartDate,   name: "eventStartDate")  
@@ -32,6 +33,7 @@ class AdminAddEventPage
   div(:errorTitle, class: "form-error js-error-title")
   div(:errorDescription, class: "form-error js-error-description")
   div(:errorReference,   class: "form-error js-error-reference")
+  div(:result,  id: "js-response-ev")
  
   def default(data = {})
     populate_page_with DEFAULT_DATA.merge(data)  
@@ -126,4 +128,9 @@ class AdminAddEventPage
     end
   end  
   
+  def success     
+    self.result_element.when_present    
+    return SuccessMessageArray.include? self.result
+  end
+
 end
