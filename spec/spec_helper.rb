@@ -3,8 +3,9 @@ require 'headless'
 require "watir/rspec"
 # require "watir-webdriver"
 
-require_relative '../spec/commons/roots'
-require_relative '../spec/commons/useful_func'
+# require_relative '../spec/commons/roots'
+# require_relative '../spec/commons/useful_func'
+
 
 RSpec.configure do |config|
   config.add_formatter(:progress) if config.formatters.empty?
@@ -15,17 +16,19 @@ RSpec.configure do |config|
     display = ENV['BUILD_NUMBER'] || "99"
     @headless = Headless.new(:display => display)     
     @headless.start
-    # @browser = Watir::Browser.new (ENV['browser'] || :ff) 
-    # @browser = Watir::Browser.new :ff
-    prefs = {
-     :download => {
-       :prompt_for_download => false,
-       :default_directory => "../chromedriver"
-     }
-    }
-    @browser = Watir::Browser.new :chrome, :prefs => prefs
-    @browser.driver.manage.timeouts.implicit_wait = 15          
-     
+    
+    @browser = Watir::Browser.new (ENV['browser'] || :ff) 
+    Watir.default_timeout = 5  
+    # prefs = {
+    #  :download => {
+    #    :prompt_for_download => false,
+    #    :default_directory => "../chromedriver"
+    #  }
+    # }
+    # @browser = Watir::Browser.new :chrome, :prefs => prefs
+    # @browser.driver.manage.timeouts.implicit_wait = 5  
+    @browser.driver.manage.timeouts.page_load = 30     
+    @browser.window.maximize
   end
   
   # Close that browser after each example.
@@ -56,5 +59,15 @@ RSpec.configure do |config|
   # You can also use #during to test if something stays the same during the specified period:
   #   @browser.text_field(:name => "first_name").should exist.during(2)
   config.include Watir::RSpec::Matchers
+
+  config.expect_with :rspec do |c|    
+    # Disable the `should` syntax
+    c.syntax = :expect
+
+    # # Disable the `expect` sytax
+    # c.syntax = :should
+    # # ...or explicitly enable both
+    # c.syntax = [:should, :expect]
+  end
 end
 
