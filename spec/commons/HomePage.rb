@@ -7,22 +7,18 @@ class HomePage
   include PageObject
   
   page_url 'http://sevenbits:10ytuhbnzn@itlft.7bits.it/'
-
-  ErrorMessageArray = [
-    "The field can not be empty", 
-    "Incorrect email", 
-    "The permissible length of the address - [7, 144]", 
-    "Некорректный email", 
-    "Поле не должно быть пустым", 
-    "Допустимая длина адреса - [7, 144]", 
-    "Допустимая длина локального имени адреса - [1, 64]"
-  ]  
-  SuccessMessageArray = [ 
-    "Thank you for subscribe! After some time, the letter will arrive on mailbox with further instructions",
-    "Спасибо за подписку! Через некоторое время вам на почтовый ящик придет письмо с дальнейшими инструкциями"
-  ]
   STARTDATE=3
   ENDDATE=4
+
+  ErrorMessageSubArray = [
+    "The field can not be empty", "Incorrect email", "The permissible length of the address - [7, 144]", "Некорректный email",
+    "Поле не должно быть пустым", "Допустимая длина адреса - [7, 144]", "Допустимая длина локального имени адреса - [1, 64]"
+  ]  
+  SuccessMessageSubArray = [ 
+    "Thank you for subscribe! After some time, the letter will arrive on mailbox with further instructions",
+    "Спасибо за подписку! Через некоторое время вам на почтовый ящик придет письмо с дальнейшими инструкциями"
+  ]  
+  SuccessFormMessageArray = ["Заявка сохранена.", "Application is saved"]
 
   DEFAULT_DATA = {       
     'requesterName'  => 'Funnie Caruso',    
@@ -59,6 +55,7 @@ class HomePage
   div(:errorTitle, class: "form-error js-error-title")
   div(:errorDescription, class: "form-error js-error-description")
   div(:errorReference,   class: "form-error js-error-reference")
+  div(:result,     id: "js-response")
  
   def default(data = {})
     populate_page_with DEFAULT_DATA.merge(data)  

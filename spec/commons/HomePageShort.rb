@@ -58,6 +58,7 @@ class HomePageShort
   div(:errorTitle, class: "form-error js-error-title")
   div(:errorDescription, class: "form-error js-error-description")
   div(:errorReference,   class: "form-error js-error-reference")
+  div(:result,     id: "js-response")
  
   def default(data = {})
     populate_page_with DEFAULT_DATA.merge(data)  
@@ -65,12 +66,10 @@ class HomePageShort
   end  
 
   def next_month_e    
-
       browser.element(xpath: "html/body/div[5]/div[3]/table/thead/tr/th[3]").click
   end
 
   def next_month_s    
-
       browser.element(xpath: "html/body/div[4]/div[3]/table/thead/tr[1]/th[3]").click    
   end
 
@@ -79,7 +78,6 @@ class HomePageShort
     count=0;
     days.each do |day|
       if !day.visible?  
-        # STDERR.puts day.inner_html + " not visible"
         count+=1
       else
         break
@@ -95,8 +93,7 @@ class HomePageShort
     hours = browser.elements(xpath: './/*[@class="hour"]')
     count=0;
     hours.each do |hour|
-      if !hour.visible?  
-      # STDERR.puts hour.inner_html + " not visible"
+      if !hour.visible?   
         count+=1
       else
         break
@@ -112,8 +109,7 @@ class HomePageShort
     mins = browser.elements(xpath: './/*[@class="minute"]')
     count=0;
     mins.each do |minute|
-      if !minute.visible?  
-    #    STDERR.puts minute.inner_html + " not visible"
+      if !minute.visible?
         count+=1
       else
         break
