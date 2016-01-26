@@ -57,7 +57,7 @@ class HomePageShort
   div(:errorDate,  class: "form-error js-error-date")
   div(:errorTitle, class: "form-error js-error-title")
   div(:errorDescription, class: "form-error js-error-description")
-  div(:errorReference,   class: "form-error js-error-reference")
+  div(:errorReference,   class: "form-error js-error-reference")                                
   div(:result,     id: "js-response")
  
   def default(data = {})

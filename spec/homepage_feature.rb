@@ -184,67 +184,67 @@ describe "RequestForEvent" do
     end
   end
 
-  # context 'URL?' do
+  context 'URL?' do
     
-  #   it 'Positive URL examples' do      
-  #     urls = File.readlines("test_data/good_url.txt")      
-  #     aggregate_failures("good_url") do
-  #       urls.each do |url|
-  #         page = HomePage.new(browser, true)
-  #         page.eventReference_element.when_visible
-  #         page.eventReference = url
-  #         page.sendRequest
-  #         page.errorReference_element.when_present
-  #         expect(page.errorReference =="").to be_truthy
-  #       end
-  #     end          
-  #   end  
+    it 'Positive URL examples' do      
+      urls = File.readlines("test_data/good_url.txt")      
+      aggregate_failures("good_url") do
+        urls.each do |url|
+          page = HomePage.new(browser, true)
+          page.eventReference_element.when_visible
+          page.eventReference = url
+          page.sendRequest
+          page.errorReference_element.when_present
+          expect(page.errorReference =="").to be_truthy
+        end
+      end          
+    end  
 
-  #   it 'Negative URL examples' do
-  #     urls = File.readlines("test_data/bad_url.txt")      
-  #     aggregate_failures("bad_url") do
-  #       urls.each do |url|
-  #         page = HomePage.new(browser, true)
-  #         page.eventReference_element.when_visible
-  #         page.eventReference = url
-  #         page.sendRequest
-  #         page.errorReference_element.when_present
-  #         expect(page.errorReference !="").to be_truthy
-  #       end
-  #     end      
-  #   end
-  # end
+    it 'Negative URL examples' do
+      urls = File.readlines("test_data/bad_url.txt")      
+      aggregate_failures("bad_url") do
+        urls.each do |url|
+          page = HomePage.new(browser, true)
+          page.eventReference_element.when_visible
+          page.eventReference = url
+          page.sendRequest
+          page.errorReference_element.when_present
+          expect(page.errorReference !="").to be_truthy
+        end
+      end      
+    end
+  end
 
-  # context 'Email?' do
+  context 'Email?' do
     
-  #   it 'Positive email examples' do 
-  #     emails = File.readlines("test_data/good_emails.txt")
-  #     aggregate_failures("good_emails") do
-  #       emails.each do |email|
-  #         page = HomePage.new(browser, true)
-  #         page.requesterEmail_element.when_present            
-  #         page.requesterEmail = email
-  #         page.sendRequest
-  #         page.errorEmail_element.when_present
-  #         expect(page.errorEmail =="").to be_truthy
-  #       end
-  #     end
-  #   end
+    it 'Positive email examples' do 
+      emails = File.readlines("test_data/good_emails.txt")
+      aggregate_failures("good_emails") do
+        emails.each do |email|
+          page = HomePage.new(browser, true)
+          page.requesterEmail_element.when_present            
+          page.requesterEmail = email
+          page.sendRequest
+          page.errorEmail_element.when_present
+          expect(page.errorEmail =="").to be_truthy
+        end
+      end
+    end
   
-  #   it 'Negative email examples' do
-  #     emails = File.readlines("test_data/bad_emails.txt")
-  #     aggregate_failures("bad_emails") do
-  #       emails.each do |email|
-  #         page = HomePage.new(browser, true)
-  #         page.requesterEmail_element.when_present            
-  #         page.requesterEmail = email
-  #         page.sendRequest
-  #         page.errorEmail_element.when_present
-  #         expect(page.errorEmail !="").to be_truthy
-  #       end
-  #     end
-  #   end
-  # end
+    it 'Negative email examples' do
+      emails = File.readlines("test_data/bad_emails.txt")
+      aggregate_failures("bad_emails") do
+        emails.each do |email|
+          page = HomePage.new(browser, true)
+          page.requesterEmail_element.when_present            
+          page.requesterEmail = email
+          page.sendRequest
+          page.errorEmail_element.when_present
+          expect(page.errorEmail !="").to be_truthy
+        end
+      end
+    end
+  end
 
   # context 'Subscriber?' do
   #   before (:each) do

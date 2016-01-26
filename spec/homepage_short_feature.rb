@@ -1,6 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 require 'rspec/expectations'
+require 'pry'
 require_relative '../spec/spec_helper'
 require_relative '../spec/commons/useful_func'
 require_relative '../spec/commons/HomePageShort'
@@ -118,9 +119,9 @@ describe "RequestForEvent, short form" do
         urls.each do |url|
           page = HomePageShort.new(browser, true)       
           page.eventReference_element.when_visible
-          page.eventReference = url
-          page.sendRequest
-          page.errorReference_element.when_present            
+          page.eventReference = url.chomp
+          page.sendRequest          
+          Watir::Wait.until{ page.errorReference_element.exists? }
           expect(page.errorReference =="").to be_truthy
         end
       end          
@@ -132,10 +133,9 @@ describe "RequestForEvent, short form" do
         urls.each do |url|
           page = HomePageShort.new(browser, true)       
           page.eventReference_element.when_visible
-          page.eventReference = url
+          page.eventReference = url.chomp
           page.sendRequest       
-          page.errorReference_element.when_present
-          expect(page.errorReference != "").to be_truthy
+          Watir::Wait.until{ page.errorReference != "" }
         end
       end      
     end   
