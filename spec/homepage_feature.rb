@@ -246,36 +246,36 @@ describe "RequestForEvent" do
     end
   end
 
-  # context 'Subscriber?' do
-  #   before (:each) do
-  #     page = HomePage.new(browser, true)
-  #     page.subscriber_element.when_present
-  #     page.subscribe_element.when_present
-  #   end
+  context 'Subscriber?' do
+    before (:each) do
+      page = HomePage.new(browser, true)
+      page.subscriber_element.when_present
+      page.subscribe_element.when_present
+    end
     
-  #   it 'Positive email examples' do 
-  #     emails = File.readlines("test_data/good_emails.txt")
-  #     aggregate_failures("good_emails") do
-  #       emails.each do |email|      
-  #         page.subscriber = email.chomp
-  #         page.subscribe          
-  #         page.errorSubscriberEmail_element.when_visible
-  #         expect( HomePage::SuccessMessageArray ).to include (page.errorSubscriberEmail)                       
-  #       end
-  #     end
-  #   end  
-  #   it 'Negative email examples' do        
-  #     emails = File.readlines("test_data/bad_emails.txt")
-  #       emails.each do |email|
-  #         page.subscriber = email.chomp
-  #         page.subscribe 
-  #         page.errorSubscriberEmail_element.when_visible
-  #         expect( HomePage::ErrorMessageArray ).to include (page.errorSubscriberEmail)
-  #       end
-  #     end
-  #   end
+    it 'Positive email examples' do 
+      emails = File.readlines("test_data/good_emails.txt")
+      aggregate_failures("good_emails") do
+        emails.each do |email|      
+          page.subscriber = email.chomp
+          page.subscribe          
+          page.errorSubscriberEmail_element.when_visible
+          expect( HomePage::SuccessMessageArray ).to include (page.errorSubscriberEmail)                       
+        end
+      end
+    end  
+    it 'Negative email examples' do        
+      emails = File.readlines("test_data/bad_emails.txt")
+        emails.each do |email|
+          page.subscriber = email.chomp
+          page.subscribe 
+          page.errorSubscriberEmail_element.when_visible
+          expect( HomePage::ErrorMessageArray ).to include (page.errorSubscriberEmail)
+        end
+      end
+    end
 
-  # end
+  end
 
   # context "Dates of event"  do
   #   before (:each) do

@@ -134,8 +134,9 @@ describe "RequestForEvent, short form" do
           page = HomePageShort.new(browser, true)       
           page.eventReference_element.when_visible
           page.eventReference = url.chomp
-          page.sendRequest       
-          Watir::Wait.until{ page.errorReference != "" }
+          page.sendRequest 
+          page.errorReference_element.when_visible          
+          expect(page.errorReference !="").to be_truthy
         end
       end      
     end   
