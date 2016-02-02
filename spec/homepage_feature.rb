@@ -6,7 +6,7 @@ require_relative '../spec/spec_helper'
 require_relative '../spec/commons/useful_func'
 require_relative '../spec/commons/HomePage'
 
-describe "RequestForEvent" do
+describe "HomePage: RequestForEvent" do
   page = nil
 
   context "requesterName" do
@@ -208,8 +208,9 @@ describe "RequestForEvent" do
           page.eventReference_element.when_visible
           page.eventReference = url
           page.sendRequest
-          page.errorReference_element.when_present
-          expect(page.errorReference !="").to be_truthy
+          page.wait_until do
+            page.errorReference != ""
+          end          
         end
       end      
     end
@@ -239,110 +240,115 @@ describe "RequestForEvent" do
           page.requesterEmail_element.when_present            
           page.requesterEmail = email
           page.sendRequest
-          page.errorEmail_element.when_present
-          expect(page.errorEmail !="").to be_truthy
+          page.wait_until do
+            page.errorEmail != ""
+          end          
         end
       end
     end
   end
 
   context 'Subscriber?' do
-    before (:each) do
-      page = HomePage.new(browser, true)
-      page.subscriber_element.when_present
-      page.subscribe_element.when_present
-    end
     
     it 'Positive email examples' do 
       emails = File.readlines("test_data/good_emails.txt")
       aggregate_failures("good_emails") do
         emails.each do |email|      
+          page = HomePage.new(browser, true)
+          page.subscriber_element.when_visible
+          page.subscribe_element.when_visible
           page.subscriber = email.chomp
           page.subscribe          
-          page.errorSubscriberEmail_element.when_visible
-          expect( HomePage::SuccessMessageArray ).to include (page.errorSubscriberEmail)                       
+          page.wait_until do
+            HomePage::SuccessMessageSubArray.include?(page.errorSubscriberEmail)
+          end
         end
       end
     end  
     it 'Negative email examples' do        
       emails = File.readlines("test_data/bad_emails.txt")
+      aggregate_failures("bad_emails") do
         emails.each do |email|
+          page = HomePage.new(browser, true)
+          page.subscriber_element.when_visible
+          page.subscribe_element.when_visible
           page.subscriber = email.chomp
           page.subscribe 
-          page.errorSubscriberEmail_element.when_visible
-          expect( HomePage::ErrorMessageArray ).to include (page.errorSubscriberEmail)
+          page.wait_until do
+            HomePage::ErrorMessageSubArray.include?(page.errorSubscriberEmail)
+          end
         end
       end
     end
 
   end
 
-  # context "Dates of event"  do
-  #   before (:each) do
-  #     page = HomePage.new(browser, true)
-  #     page.eventEndDate_element.when_visible
-  #     page.eventStartDate_element.when_visible
-  #     page.sendRequest_element.when_present
-  #   end
+  context "Dates of event"  do
+    before (:each) do
+      page = HomePage.new(browser, true)
+      page.eventEndDate_element.when_visible
+      page.eventStartDate_element.when_visible
+      page.sendRequest_element.when_present
+    end
 
-  #   it 'Start date can not be empty ' do
-  #     page.eventEndDate_element.click
-  #     page.next_month_e       
-  #     page.next_day(2)
-  #     page.choose_hour(20)
-  #     page.choose_minute(3)
-  #     page.sendRequest          
-  #     page.errorDate_element.when_present
-  #     expect( page.errorDate !="").to be_truthy            
-  #   end
+    it 'Start date can not be empty ' do
+      page.eventEndDate_element.click
+      page.next_month_e       
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
+      page.sendRequest          
+      page.errorDate_element.when_present
+      expect( page.errorDate !="").to be_truthy            
+    end
 
-  #   it 'End date can not be empty ' do
-  #     page.eventStartDate_element.click
-  #     page.next_month_s       
-  #     page.next_day(2)
-  #     page.choose_hour(20)
-  #     page.choose_minute(3)
-  #     page.sendRequest
-  #     page.errorDate_element.when_present
-  #     expect( page.errorDate !="").to be_truthy            
-  #   end
+    it 'End date can not be empty ' do
+      page.eventStartDate_element.click
+      page.next_month_s       
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
+      page.sendRequest
+      page.errorDate_element.when_present
+      expect( page.errorDate !="").to be_truthy            
+    end
   
-  #   it 'If startDate===endDate' do
-  #     page.eventEndDate_element.click
-  #     page.next_month_e
-  #     page.next_month_e
-  #     page.next_day(2)
-  #     page.choose_hour(20)
-  #     page.choose_minute(3)
+    it 'If startDate===endDate' do
+      page.eventEndDate_element.click
+      page.next_month_e
+      page.next_month_e
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
 
-  #     page.eventStartDate_element.click
-  #     page.next_month_s
-  #     page.next_month_s
-  #     page.next_day(2)
-  #     page.choose_hour(20)
-  #     page.choose_minute(3)
-  #     page.sendRequest      
-  #     page.errorDate_element.when_present
-  #     expect( page.errorDate !="").to be_truthy  
-  #   end
+      page.eventStartDate_element.click
+      page.next_month_s
+      page.next_month_s
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
+      page.sendRequest      
+      page.errorDate_element.when_present
+      expect( page.errorDate !="").to be_truthy  
+    end
 
-  #   it 'Start date should be less than end date' do
-  #     page.eventEndDate_element.click
-  #     page.next_month_e
-  #     page.next_month_e
-  #     page.next_day(2)
-  #     page.choose_hour(20)
-  #     page.choose_minute(3)
+    it 'Start date should be less than end date' do
+      page.eventEndDate_element.click
+      page.next_month_e
+      page.next_month_e
+      page.next_day(2)
+      page.choose_hour(20)
+      page.choose_minute(3)
       
-  #     page.eventStartDate_element.click
-  #     page.next_month_s
-  #     page.next_month_s
-  #     page.next_day(4)
-  #     page.choose_hour(10)
-  #     page.choose_minute(3)
-  #     page.sendRequest              
-  #     page.errorDate_element.when_present
-  #     expect( page.errorDate !="").to be_truthy  
-  #   end
-  # end  
+      page.eventStartDate_element.click
+      page.next_month_s
+      page.next_month_s
+      page.next_day(4)
+      page.choose_hour(10)
+      page.choose_minute(3)
+      page.sendRequest              
+      page.errorDate_element.when_present
+      expect( page.errorDate !="").to be_truthy  
+    end
+  end  
 end

@@ -8,8 +8,7 @@ require_relative '../spec/commons/HomePage'
 
 describe "Restore password" do 
   
-  context 'Positive email examples, but not exists in DB as users' do
-  
+  context 'Positive email examples, but not exists in DB as users' do  
 
     it 'read emails from file, valid email, but didnot signed in system' do 
       emails = File.readlines("test_data/good_emails.txt")           
@@ -17,7 +16,7 @@ describe "Restore password" do
         emails.each do |email|                   
           page = RestorePasswordPage.new(browser, true)
           page.email_element.when_visible
-          page.email = email.chop
+          page.email = email.chomp
           page.restore
           page.error_element.when_visible         
           expect(page.error !="").to be_truthy
@@ -33,7 +32,7 @@ describe "Restore password" do
         emails.each do |email|                    
           page = RestorePasswordPage.new(browser, true)
           page.email_element.when_visible
-          page.email = email.chop
+          page.email = email.chomp
           page.restore
           page.error_element.when_visible
           expect(page.error !="").to be_truthy           

@@ -3,7 +3,7 @@ require 'headless'
 require "watir/rspec"
 # require "watir-webdriver"
 
-# require_relative '../spec/commons/roots'
+require_relative '../spec/commons/roots'
 # require_relative '../spec/commons/useful_func'
 
 

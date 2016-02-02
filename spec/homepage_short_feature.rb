@@ -8,7 +8,7 @@ require_relative '../spec/commons/HomePageShort'
 require_relative '../spec/commons/LoginPage'
 
 
-describe "RequestForEvent, short form" do
+describe "HomePage: RequestForEvent when logged in, short form" do
   page = nil
   before (:all) do      
     page = LoginPage.new(browser, true)
@@ -135,8 +135,9 @@ describe "RequestForEvent, short form" do
           page.eventReference_element.when_visible
           page.eventReference = url.chomp
           page.sendRequest 
-          page.errorReference_element.when_visible          
-          expect(page.errorReference !="").to be_truthy
+          page.wait_until do
+            page.errorReference !=""
+          end
         end
       end      
     end   

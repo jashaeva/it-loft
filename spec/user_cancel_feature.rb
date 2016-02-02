@@ -49,13 +49,13 @@ describe "Create and cancel event. " do
         Watir::Wait.until{ browser.url == TEST_URL }
       end  
       before (:each) do
-        browser.goto "http://sevenbits:10ytuhbnzn@itlft.7bits.it/user-event/cancel/#{ev_ID}"
+        browser.goto "http://itlft.7bits.it/user-event/cancel/#{ev_ID}"
       end
       
       it "empty comment" do        
         page = CancelEventPage.new(browser)
         page.transferComment = ""
-        page.sendRequest
+        page.sendRequest             
         expect( page.errorComment !="").to be_truthy        
       end
       it "transferComment can't be too long (513)" do
